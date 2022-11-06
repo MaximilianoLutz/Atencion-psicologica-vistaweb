@@ -1,13 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { startLogin } from './redux/features/auth/authSlice';
+
+import { Counter } from './redux/features/counter/Counter';
+
 
 function App() {
+
+
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    dispatch(startLogin({email: 'dor', password: 12345}))
+    
+  }, [dispatch]);
+  
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+     
         <Counter />
         <p>
           Edit <code>src/App.js</code> and save to reload.
