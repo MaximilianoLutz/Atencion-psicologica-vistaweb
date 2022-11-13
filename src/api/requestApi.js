@@ -38,15 +38,15 @@ export const crearPaciente = async (url, data) => {
 
 export const fetchToken = (username, password) => {
 
-  const url = `http://${ ip }:8080/oauth/token`;
+  const url = `http://${ip}:8080/oauth/token`;
 
   let encode = btoa('PacientesFront' + ':' + '1234$');
   console.log(encode);
-  
+
   const params = `grant_type=password&username=${username}&password=${password}`
   const init = {
     method: 'POST',
-    body: params, // data can be `string` or {object}!
+    body: params,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       'authorization': 'basic ' + encode
@@ -54,6 +54,24 @@ export const fetchToken = (username, password) => {
   }
 
   return fetch(url, init);
+
+}
+
+export const validarToken = async () => {
+  const token = localStorage.getItem('access_token');
+
+  const url = `http://${ip}:8080/api/check_token`;
+
+  try {
+    const respuesta = await fetch(url, { headers: { 'authorization': 'Bearer ' + token } });
+    const { ok } = await respuesta;
+
+    return ok;
+
+  } catch (error) {
+    return false;
+  }
+
 
 }
 
