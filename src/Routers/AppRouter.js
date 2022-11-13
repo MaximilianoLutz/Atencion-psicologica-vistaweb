@@ -6,7 +6,7 @@ import {
   HashRouter
 } from "react-router-dom";
 
-import { startChecking, startCheckingFinish } from "../redux/features/auth/authSlice";
+import { startChecking, startCheckingFinish } from "../redux/features/Slices/authSlice";
 import { SignIn } from "../screens/auth/SingIn";
 import { ProfesionalRouter } from "./ProfesionalRouter";
 import { PrivateRoutes } from "./PrivateRoutes";

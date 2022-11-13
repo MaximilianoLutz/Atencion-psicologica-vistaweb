@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -16,18 +19,18 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
+import { ListItemText } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+
 import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart';
 import Deposits from './Deposits';
-import Orders from './Orders';
-import { useDispatch, useSelector } from 'react-redux';
-import { startLogoutBack } from '../../action/auth';
-import { ListItemText } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+
+
 import CustomizedTables from '../Pacientes/CustomizedTables';
 import { cargarPacientesByProfesional } from '../../action/proAction';
+import { logout } from '../../redux/features/Slices/authSlice';
+
 
 function Copyright(props) {
   return (
@@ -103,9 +106,9 @@ function DashboardContent() {
 
   console.log(pacientes);                
   
-  let idProf = typeof(pro?.idHex);
+  let idProfesional = typeof(pro?.idHex);
   const redirection = () =>{
-    if (idProf != 'string'){
+    if (idProfesional != 'string'){
       navigate('/inicio');      
     }    
   }
@@ -115,8 +118,7 @@ function DashboardContent() {
   }, [pro])
   
   const handleLogout = () =>{
-    dispatch ( startLogoutBack());
-    //navigate('/auth/login'); //window.location.replace('http://www.google.com') para rutas externas
+    dispatch ( logout());
   }
 
   const [open, setOpen] = React.useState(true);
