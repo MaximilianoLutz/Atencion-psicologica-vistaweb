@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 
 // import { fetchToken } from '../Hooks/useFetch/crearPaciente';
 import { useDispatch } from 'react-redux';
-import { startLogin } from '../../redux/features/auth/authSlice';
+import { startLogin } from '../../redux/features/Slices/authSlice';
 import { useForm } from '../../hooks/useForm';
 
 function Copyright(props) {

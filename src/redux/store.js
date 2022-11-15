@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './features/Slices/authSlice';
-import counterReducer from './features/counter/counterSlice';
+import  profesionalSlice  from './features/Slices/ProfesionalSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    counter: counterReducer
+    profesional: profesionalSlice
   },
 });

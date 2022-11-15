@@ -7,15 +7,15 @@ import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 
-import ProfesionalesList from '../Profesional/ProfesionalesList';
-import { clearProfesionalActive } from '../../action/proAction';
-import { startLoadingProfesionalList } from '../../action/auth';
+import ProfesionalesList from '../profesional/ProfesionalesList';
+import { clearProfesionalActive } from '../../redux/features/Slices/ProfesionalSlice';
+import { startLoadingProfesionalList } from '../../redux/features/Slices/authSlice';
 
 export const PreDashboard = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { pro } = useSelector( state => state.profesional );
+    const { profesional } = useSelector( state => state.profesional );
     const {  profesionalesUser } = useSelector(state => state.auth);
 
     useEffect(() => {
@@ -37,7 +37,7 @@ export const PreDashboard = () => {
         setProfesionales(profesionalesUser);
     }
 
-    let idProf = typeof(pro?.idHex);
+    let idProf = typeof(profesional?.idHex);
     
     const redirection = () =>{
         if (idProf == 'string'){
@@ -46,7 +46,7 @@ export const PreDashboard = () => {
     }
     useEffect(() => {
         redirection();  
-     }, [pro]);
+     }, [profesional]);
 
     const mdTheme = createTheme();
 

@@ -23,13 +23,14 @@ import { ListItemText } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 import { mainListItems, secondaryListItems } from './listItems';
-import Chart from './Chart';
+// import Chart from './Chart';
 import Deposits from './Deposits';
 
 
-import CustomizedTables from '../Pacientes/CustomizedTables';
-import { cargarPacientesByProfesional } from '../../action/proAction';
+import CustomizedTables from '../CustomizedTables';
+// import { cargarPacientesByProfesional } from '../../action/proAction';
 import { logout } from '../../redux/features/Slices/authSlice';
+import { TablePaciente } from '../pacientes/TablePaciente';
 
 
 function Copyright(props) {
@@ -98,15 +99,14 @@ function DashboardContent() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    React.useEffect(() => {
-      dispatch(cargarPacientesByProfesional());
-  }, [dispatch]);
 
-  const { pro, pacientes } = useSelector( state => state.profesional );
 
-  console.log(pacientes);                
+  const { profesional } = useSelector( state => state.profesional );
+
+  const pacientes = [];
+             
   
-  let idProfesional = typeof(pro?.idHex);
+  let idProfesional = typeof(profesional?.idHex);
   const redirection = () =>{
     if (idProfesional != 'string'){
       navigate('/inicio');      
@@ -115,7 +115,7 @@ function DashboardContent() {
 
   React.useEffect(() => {
      redirection();  
-  }, [pro])
+  }, [profesional])
   
   const handleLogout = () =>{
     dispatch ( logout());
@@ -155,7 +155,7 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Le damos la bienvenida { pro.nombre }  { pro.apellido }
+              Le damos la bienvenida { profesional.nombre }  { profesional.apellido }
             </Typography>
             {/* <IconButton color="inherit" onClick={ handleLoadProf }>
                 <PeopleIcon />
@@ -212,7 +212,7 @@ function DashboardContent() {
                     height: 240,
                   }}
                 >
-                  <Chart />
+              <Deposits />
                 </Paper>
               </Grid>
               {/* Recent Deposits */}
@@ -231,7 +231,7 @@ function DashboardContent() {
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <CustomizedTables pacientes={pacientes} />
+                <CustomizedTables subjects={pacientes} Table={<TablePaciente /> } />
                   {/* <Orders /> */}
                 </Paper>
               </Grid>

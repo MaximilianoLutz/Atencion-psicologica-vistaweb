@@ -11,8 +11,7 @@ import { SignIn } from "../screens/auth/SingIn";
 import { ProfesionalRouter } from "./ProfesionalRouter";
 import { PrivateRoutes } from "./PrivateRoutes";
 import { PublicRoutes } from "./PublicRoutes";
-
-// import SignUp from "../Auth/SingUp";
+import SignUp from "../screens/auth/SingUp";
 
 
 
@@ -35,8 +34,7 @@ export default function AppRouter() {
   useEffect(() => {
 
     if (uidAuth) {
-   
-      
+
       dispatch(startChecking());
 
     } else {
@@ -63,10 +61,10 @@ export default function AppRouter() {
           </PrivateRoutes>
         } />
 
-        {/* <Route 
+        <Route 
           path= "/auth/register/"
           element={ <SignUp /> }
-        /> */}
+        />
 
       </Routes>
     </HashRouter>
