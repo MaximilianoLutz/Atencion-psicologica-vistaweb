@@ -75,25 +75,42 @@ export const validarToken = async () => {
 
 }
 
-export const fetchConTokenMethod = async (url, data, method) => {
+export const fetchConTokenMethod = async (url, data, method = 'GET') => {
   const token = localStorage.getItem('access_token');
   console.log(token);
 
   if (method === 'GET') {
-      try {
+    try {
 
-          const resp = await fetch(url, {
-              method: method,
-              headers: {
-                  'authorization': 'Bearer ' + token
-              }
-          });
+      const respuesta = await fetch(url, {
+        method: method,
+        headers: {
+          'authorization': 'Bearer ' + token
+        }
+      });
 
-          return resp.json();
-      } catch (error) {
-          console.log(error);
-          return [];
-      }
+      return respuesta.json();
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
   }
+
+  try{
+
+    const respuesta = await fetch(url, {
+      method: method,
+      body: JSON.stringify(data),
+      headers: {
+        'authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      }
+    });
+  }catch(Error){
+    console.log(error);
+    return [];
+  }
+
+  return respuesta.json();
 }
 

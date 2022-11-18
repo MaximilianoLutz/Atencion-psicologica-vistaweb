@@ -44,6 +44,18 @@ const initialState = {
 //   }
 // )
 
+export const startLoadingPacientes = createAsyncThunk(
+  'profesional/startLoadingPacientes',
+  async (profesionalId, thunkAPI) => {
+
+    const url = `http://${ ip }:8080/api/pacientesP/${profesionalId}`;
+
+    const pacientes = await fetchConTokenMethod(url);
+
+    return respuesta.json();
+    throw Error
+  });
+
 
 export const profesionalSlice = createSlice({
   name: 'profesional',
@@ -59,28 +71,23 @@ export const profesionalSlice = createSlice({
     },
    
   },
-  // extraReducers: (builder) => {
-  //   builder
-  //     .addCase(startLogin.pending, (state) => {
-  //       state.checking = true;
-  //       console.log('pending');
-  //     })
-  //     .addCase(startLogin.fulfilled, (state, action) => {
-  //       console.log(action.payload);
-  //       localStorage.setItem('access_token', action.payload.access_token);
-  //       localStorage.setItem('token-init-date', new Date().getTime() );
-  //       state.checking = false;
-  //       state.uidAuth = action.payload.Uid;
-  //       state.name = action.payload.Name;
-  //       console.log('filfilled');
+  extraReducers: (builder) => {
+    builder
+      .addCase(startLoadingPacientes.pending, (state) => {
+        
+        console.log('pending');
+      })
+      .addCase(startLoadingPacientes.fulfilled, (state, action) => {
+        console.log(action.payload);
 
-  //     }).addCase(startLogin.rejected, (state) => {
-  //       state.checking = true;
-  //       state.uidAuth = null;
-  //       state.name = null;
-  //       state.profesionalesUser = [];
-  //       console.log('rejected');
-  //     })
+        state.pacientes = action.payload.pacientes
+        console.log('filfilled');
+    
+      }).addCase(startLoadingPacientes.rejected, (state) => {
+        
+        state.pacientes = [];
+        console.log('rejectedpacientes');
+      })
   //     .addCase(startChecking.pending, (state) => {
   //       // state.checking = true;
   //       console.log('pendingToken');
@@ -105,7 +112,7 @@ export const profesionalSlice = createSlice({
   //       state.profesionalesUser = [];
   //       console.log('rejectedToken');
   //     });
-  //},
+  },
 });
 
 export const {clearProfesionalActive, setProfesionalActive } = profesionalSlice.actions;
