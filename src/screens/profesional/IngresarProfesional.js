@@ -11,9 +11,11 @@ import Container from '@mui/material/Container';
 import { useForm } from '../../hooks/useForm';
 import { ip } from '../../ip';
 import { fetchConTokenMethod } from '../../api/requestApi';
+import { useNavigate } from 'react-router-dom';
 
 export default function IngresarProfesional() {
 
+  const navigate = useNavigate();
   const { uidAuth } = useSelector(state => state.auth);
 
   const [formValues, handleInputChange] = useForm({
@@ -28,6 +30,9 @@ export default function IngresarProfesional() {
 
   const { nombre, apellido, matricula, matricula2, profesion, email, telefono } = formValues;
 
+  const irAlInicio = ()=>{
+    navigate('/inicio')
+  }
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -39,8 +44,9 @@ export default function IngresarProfesional() {
 
     const url = `http://${ip}:8080/api/entrypoint/profesional`
 
-    const crearProfesional = await fetchConTokenMethod(url, profesional, 'POST');
-
+      const crearProfesional = await fetchConTokenMethod(url, profesional, 'POST');
+    
+    if(crearProfesional.idHex) irAlInicio();
     console.log(crearProfesional);
   }
 

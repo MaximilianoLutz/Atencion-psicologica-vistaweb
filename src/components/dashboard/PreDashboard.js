@@ -9,7 +9,7 @@ import Paper from '@mui/material/Paper';
 
 import ProfesionalesList from '../profesional/ProfesionalesList';
 import { clearProfesionalActive } from '../../redux/features/Slices/ProfesionalSlice';
-import { startLoadingProfesionalList } from '../../redux/features/Slices/authSlice';
+import { startLoadingProfesionalList, setProfesionales } from '../../redux/features/Slices/authSlice';
 
 export const PreDashboard = () => {
 
@@ -27,6 +27,7 @@ export const PreDashboard = () => {
     }, [dispatch])
 
     useEffect(() => {
+        
         setProfesionales(profesionalesUser);
     }, [profesionalesUser])
     
@@ -34,7 +35,9 @@ export const PreDashboard = () => {
     const [profesionales, setProfesionales] = useState([]);
 
     const handleFindProfe = async () => {
+        
         setProfesionales(profesionalesUser);
+        console.log(profesionales);
     }
 
     let idProf = typeof(profesional?.idHex);

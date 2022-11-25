@@ -96,7 +96,7 @@ export const fetchConTokenMethod = async (url, data, method = 'GET') => {
     }
   }
 
-  try{
+  try {
 
     const respuesta = await fetch(url, {
       method: method,
@@ -106,11 +106,11 @@ export const fetchConTokenMethod = async (url, data, method = 'GET') => {
         'Content-Type': 'application/json'
       }
     });
-  }catch(Error){
+    return respuesta.json();
+  } catch (error) {
     console.log(error);
     return [];
   }
 
-  return respuesta.json();
 }
 

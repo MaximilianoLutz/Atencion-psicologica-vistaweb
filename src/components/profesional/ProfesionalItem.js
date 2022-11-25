@@ -11,7 +11,7 @@ export const ProfesionalItem = ({ profesional }) => {
     const dispatch = useDispatch();
 
   const handleSelectProfe = ()=>{
-    dispatch(setProfesionalActive(profesional))
+    dispatch(setProfesionalActive(profesional));
 
   }
 

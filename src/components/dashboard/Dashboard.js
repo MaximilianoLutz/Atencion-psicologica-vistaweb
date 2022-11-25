@@ -29,7 +29,7 @@ import Deposits from './Deposits';
 
 import CustomizedTables from '../CustomizedTables';
 // import { cargarPacientesByProfesional } from '../../action/proAction';
-import { logout } from '../../redux/features/Slices/authSlice';
+import { logout, startLogout } from '../../redux/features/Slices/authSlice';
 import { TablePaciente } from '../pacientes/TablePaciente';
 
 
@@ -118,7 +118,7 @@ function DashboardContent() {
   }, [profesional])
   
   const handleLogout = () =>{
-    dispatch ( logout());
+    dispatch ( startLogout());
   }
 
   const [open, setOpen] = React.useState(true);

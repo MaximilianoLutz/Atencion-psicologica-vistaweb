@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { fetchConTokenMethod, fetchToken, validarToken } from '../../../api/requestApi';
 import { ip } from '../../../ip';
+import { clearProfesionalActive } from './ProfesionalSlice';
 
 
 const initialState = {
@@ -46,13 +47,23 @@ export const startLoadingProfesionalList = createAsyncThunk(
 
     const url = `http://${ip}:8080/api/entrypoint/profesionales/${uidAuth}`
 
+
     const profesionales = await fetchConTokenMethod(url, {}, 'GET');
+    if(profesionales){
+      return profesionales;
+    }else{
+      throw Error
+    }
+  });
 
-    return profesionales;
+  export const startLogout = createAsyncThunk(
+    'auth/startLogin',
+    async (data, thunkAPI) => {
+      thunkAPI.dispatch(clearProfesionalActive());
+      thunkAPI.dispatch(logout());
 
-    throw Error
-  })
-
+    }
+  );
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -72,8 +83,8 @@ export const authSlice = createSlice({
 
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
-    setUserData: (state, action) => {
-      state.uidAuth = action.payload.Uid;
+    setProfesionales: (state, action) => {
+      state.profesionalesUser = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -125,7 +136,7 @@ export const authSlice = createSlice({
         console.log('proListProf');
       }).addCase(startLoadingProfesionalList.fulfilled,
         (state, action) => {
-          state.profesionalesUser = action.payload.profesionales
+          state.profesionalesUser = action.payload
           console.log('fullFilledProf');
         }).addCase(startLoadingProfesionalList.rejected,
           (state) => {
@@ -136,7 +147,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout, startCheckingFinish } = authSlice.actions;
+export const { logout, startCheckingFinish, setProfesionales } = authSlice.actions;
 
 export const selectAuth = (state) => state;
 

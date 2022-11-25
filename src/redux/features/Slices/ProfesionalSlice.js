@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchToken, validarToken } from '../../../api/requestApi';
+import { fetchConTokenMethod, fetchToken, validarToken } from '../../../api/requestApi';
+import { ip } from '../../../ip';
 
 
 const initialState = {
@@ -50,7 +51,7 @@ export const startLoadingPacientes = createAsyncThunk(
 
     const url = `http://${ ip }:8080/api/pacientesP/${profesionalId}`;
 
-    const pacientes = await fetchConTokenMethod(url);
+    const respuesta = await fetchConTokenMethod(url);
 
     return respuesta.json();
     throw Error

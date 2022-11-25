@@ -12,6 +12,7 @@ import { ProfesionalRouter } from "./ProfesionalRouter";
 import { PrivateRoutes } from "./PrivateRoutes";
 import { PublicRoutes } from "./PublicRoutes";
 import SignUp from "../screens/auth/SingUp";
+import '../styles/spinner.css'
 
 
 
@@ -21,12 +22,10 @@ export default function AppRouter() {
 
   const { checking, uidAuth } = useSelector(state => state.auth);
 
-  console.log(uidAuth);
-  
   useEffect(() => {
-    
+
     if (localStorage.getItem('access_token')?.length > 0 && !uidAuth) {
-      
+
       dispatch(startChecking())
     }
   }, [dispatch]);
@@ -38,13 +37,17 @@ export default function AppRouter() {
       dispatch(startChecking());
 
     } else {
-      
+
       dispatch(startCheckingFinish());
     }
   }, [dispatch, uidAuth, checking]);
 
-  if (checking) return <h1>Loading...............</h1> //cambiar x un spinner
+  if (checking)
+    return (
+      <div className="spinner-container"> <div className="spinner"></div> </div> 
+    )
 
+  
   return (
     <HashRouter>
       <Routes>
@@ -61,9 +64,9 @@ export default function AppRouter() {
           </PrivateRoutes>
         } />
 
-        <Route 
-          path= "/auth/register/"
-          element={ <SignUp /> }
+        <Route
+          path="/auth/register/"
+          element={<SignUp />}
         />
 
       </Routes>
