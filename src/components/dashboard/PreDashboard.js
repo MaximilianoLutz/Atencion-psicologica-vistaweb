@@ -8,8 +8,8 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 
 import ProfesionalesList from '../profesional/ProfesionalesList';
-import { clearProfesionalActive } from '../../redux/features/Slices/ProfesionalSlice';
-import { startLoadingProfesionalList, setProfesionales } from '../../redux/features/Slices/authSlice';
+import { clearProfesionalActive, startLoadingPacientes } from '../../redux/features/Slices/ProfesionalSlice';
+import { startLoadingProfesionalList } from '../../redux/features/Slices/authSlice';
 
 export const PreDashboard = () => {
 
@@ -49,6 +49,7 @@ export const PreDashboard = () => {
     }
     useEffect(() => {
         redirection();  
+        // dispatch(startLoadingPacientes(profesional.idHex))
      }, [profesional]);
 
     const mdTheme = createTheme();

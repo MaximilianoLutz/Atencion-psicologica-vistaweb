@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -31,6 +32,7 @@ import CustomizedTables from '../CustomizedTables';
 // import { cargarPacientesByProfesional } from '../../action/proAction';
 import { logout, startLogout } from '../../redux/features/Slices/authSlice';
 import { TablePaciente } from '../pacientes/TablePaciente';
+import { startLoadingPacientes } from '../../redux/features/Slices/ProfesionalSlice';
 
 
 function Copyright(props) {
@@ -101,10 +103,8 @@ function DashboardContent() {
 
 
 
-  const { profesional } = useSelector( state => state.profesional );
-
-  const pacientes = [];
-             
+  const { profesional, pacientes } = useSelector( state => state.profesional );
+          
   
   let idProfesional = typeof(profesional?.idHex);
   const redirection = () =>{
@@ -115,16 +115,22 @@ function DashboardContent() {
 
   React.useEffect(() => {
      redirection();  
-  }, [profesional])
-  
-  const handleLogout = () =>{
-    dispatch ( startLogout());
+     dispatch(startLoadingPacientes(profesional.idHex))
+    }, [profesional])
+    
+    const handleLogout = () =>{
+      dispatch ( startLogout());
+    }
+    
+    const [open, setOpen] = React.useState(true);
+    const toggleDrawer = () => {
+      setOpen(!open);
+    };
+    
+    const cargar = ()=>{
+       
+      
   }
-
-  const [open, setOpen] = React.useState(true);
-  const toggleDrawer = () => {
-    setOpen(!open);
-  };
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -164,6 +170,10 @@ function DashboardContent() {
             <IconButton color="inherit" onClick={ handleLogout }>
                 <LogoutIcon />
                 <ListItemText primary="Cerrar Sesion" />
+            </IconButton>
+            <IconButton color="inherit" onClick={ cargar }>
+                <LogoutIcon />
+                <ListItemText primary="Cargar" />
             </IconButton>
           </Toolbar>
         </AppBar>
@@ -231,7 +241,7 @@ function DashboardContent() {
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <CustomizedTables subjects={pacientes} Table={<TablePaciente /> } />
+                <CustomizedTables subjects={pacientes} />
                   {/* <Orders /> */}
                 </Paper>
               </Grid>

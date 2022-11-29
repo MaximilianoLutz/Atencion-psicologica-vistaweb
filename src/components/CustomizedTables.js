@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { TablePaciente } from './pacientes/TablePaciente';
 
 
 export const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -31,7 +32,7 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 
-export default function CustomizedTables({ subjects = [], table }) {
+export default function CustomizedTables({ subjects }) {
 
  
   return (
@@ -47,7 +48,7 @@ export default function CustomizedTables({ subjects = [], table }) {
         </TableHead>
         <TableBody>
           {subjects.map((subject) => (
-            <Table subject={subject} key={subject.id} />
+            <TablePaciente paciente={subject} key={subject.id} />
           ))}
         </TableBody>
       </Table>

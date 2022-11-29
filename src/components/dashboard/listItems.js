@@ -44,12 +44,12 @@ export const mainListItems = (
       </ListItemButton>
     </LinkRouter>
 
-    <LinkRouter to="/inicio" className="estiloBotonDash">
+    <LinkRouter to="/ingresarPaciente" className="estiloBotonDash">
     <ListItemButton>
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
-      <ListItemText primary="Pre" />
+      <ListItemText primary="Ingresar Paciente" />
     </ListItemButton>
     </LinkRouter>
     <ListItemButton>

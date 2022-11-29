@@ -77,7 +77,7 @@ export const validarToken = async () => {
 
 export const fetchConTokenMethod = async (url, data, method = 'GET') => {
   const token = localStorage.getItem('access_token');
-  console.log(token);
+  
 
   if (method === 'GET') {
     try {

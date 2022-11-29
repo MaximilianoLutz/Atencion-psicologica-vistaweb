@@ -18,43 +18,17 @@ const initialState = {
 }
 
 
-// export const startLogin = createAsyncThunk(
-//   'auth/startLogin',
-//   async (data) => {
-
-//     const { email, password } = data;
-//     const response = await fetchToken(email, password);
-//     // const { access_token, Name, Uid: uidAuth } = await response.json();
-
-//     return response.json();
-//   }
-// );
-
-// export const startChecking = createAsyncThunk(
-//   'auth/startChecking',
-//   async ( data, thunkAPI) => {
-//     const respuesta = await validarToken();
-//     if (respuesta) {
-
-//        return respuesta
-//     } else {
-//       thunkAPI.dispatch(logout());   
-//       throw Error   
-//     }
-
-//   }
-// )
-
 export const startLoadingPacientes = createAsyncThunk(
   'profesional/startLoadingPacientes',
   async (profesionalId, thunkAPI) => {
-
+    
     const url = `http://${ ip }:8080/api/pacientesP/${profesionalId}`;
 
-    const respuesta = await fetchConTokenMethod(url);
+    const respuesta = await fetchConTokenMethod(url, null, 'GET');
+    console.log(respuesta);
 
-    return respuesta.json();
-    throw Error
+    return respuesta;
+    
   });
 
 
@@ -79,40 +53,16 @@ export const profesionalSlice = createSlice({
         console.log('pending');
       })
       .addCase(startLoadingPacientes.fulfilled, (state, action) => {
-        console.log(action.payload);
 
-        state.pacientes = action.payload.pacientes
-        console.log('filfilled');
+        state.pacientes = action.payload
+        console.log('fulfilledLoadingPacientes');
+        console.log(action.payload);
     
       }).addCase(startLoadingPacientes.rejected, (state) => {
         
         state.pacientes = [];
         console.log('rejectedpacientes');
       })
-  //     .addCase(startChecking.pending, (state) => {
-  //       // state.checking = true;
-  //       console.log('pendingToken');
-  //     })
-  //     .addCase(startChecking.fulfilled, (state, action) => {
-  //       const token = localStorage.getItem('access_token');
-  //       const tokenSplit = token.split('.');
-  
-  //       let tkUser = atob(tokenSplit[1]);
-  //       let userJson = JSON.parse(tkUser)
-
-  //       state.checking = false;
-  //       state.uidAuth = userJson.Uid;
-  //       state.name = userJson.Name;
-     
-  //       console.log('filfilledToken');
-
-  //     }).addCase(startChecking.rejected, (state) => {
-  //       state.checking = false;
-  //       state.uidAuth = null;
-  //       state.name = null;
-  //       state.profesionalesUser = [];
-  //       console.log('rejectedToken');
-  //     });
   },
 });
 

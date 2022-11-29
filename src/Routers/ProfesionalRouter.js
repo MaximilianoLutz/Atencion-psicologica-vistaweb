@@ -5,37 +5,36 @@ import { useDispatch, useSelector } from 'react-redux';
 import { PreDashboard } from '../components/dashboard/PreDashboard';
 import IngresarProfesional from '../screens/profesional/IngresarProfesional';
 import { setProfesionalActive } from '../redux/features/Slices/ProfesionalSlice';
+import { IngresarPaciente } from '../components/pacientes/IngresarPaciente';
+import { useEffect } from 'react';
 
 
 export const ProfesionalRouter = () => {
     const dispatch = useDispatch();
     const state = useSelector(state => state);
 
-    const { auth, profesional } = state;
-    
-    console.log(state.auth.profesionalesUser);
-    console.log(state.profesional.profesional);
+    const { auth } = state;
+
     if (auth.profesionalesUser.length === 1) {
 
         const [profesional] = auth.profesionalesUser;
         dispatch(setProfesionalActive(profesional))
-    }
+
+    } 
     return (
 
         <>
 
-            <Routes>
+            <Routes> IngresarPaciente
 
                 <Route exact path="/dashboard" element={<DashboardScreen />} />
                 <Route exact path="/inicio" element={<PreDashboard />} />
                 <Route exact path="/ingresarProfesional" element={<IngresarProfesional />} />
+                <Route exact path="/ingresarPaciente" element={<IngresarPaciente />} />
                 <Route path="/" element={< Navigate to="/dashboard" />} />
 
             </Routes>
         </>
-
-
-
     )
 }
 

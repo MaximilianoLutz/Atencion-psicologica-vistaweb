@@ -13,11 +13,11 @@ const initialState = {
 
 export const guardarPaciente = createAsyncThunk(
   'profesional/startLoadingPacientes',
-  async (idProfesional, thunkAPI) => {
+  async (data, thunkAPI) => {
 
-    const url = `http://${ip}:8080/api/pacientesP/${profesionalId}`;
+    const url = `http://${ip}:8080/api/pacientes`;
 
-    const pacientes = await fetchConTokenMethod(url, paciente, 'POST');
+    const respuesta = await fetchConTokenMethod(url, data, 'POST');
 
     return respuesta.json();
     throw Error
@@ -61,7 +61,7 @@ export const pacientesSlice = createSlice({
   },
 });
 
-export const { setPacientes, setPacienteActual, pacienteNull } = authSlice.actions;
+export const { setPacientes, setPacienteActual, pacienteNull } = pacientesSlice.actions;
 
 export const selectPacientes = (state) => state;
 
