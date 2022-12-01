@@ -1,8 +1,15 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { fetchConTokenMethod } from '../../api/requestApi';
 import { useForm } from '../../hooks/useForm';
+
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 
 
 import { ip } from "../../ip";
@@ -14,6 +21,7 @@ export const IngresarPaciente = () => {
   const { idHex } = useSelector(state => state.profesional.profesional);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [formValues, handleInputChange, reset] = useForm({
     nombre: '',
@@ -25,97 +33,107 @@ export const IngresarPaciente = () => {
   });
 
   const { nombre, apellido, dni } = formValues;
-  
-  const url = `http://${ip}:8080/api/pacientes`;
+
   
   const handleRegister = async (e) => {
     e.preventDefault();
     console.log(formValues);
-
+    const url = `http://${ip}:8080/api/pacientes`;
+    
     const data = await fetchConTokenMethod(url, formValues, 'POST');
     console.log(data);
 
-    dispatch(guardarPaciente(formValues));
+    if(data){
+      dispatch(guardarPaciente(formValues));
+      alert('Paciente guardado correctamente')
+      reset();
+    }
 
 
-    reset();
   }
 
-  
+
   console.log(formValues);
   return (
-    <div className='container py-4'>
-      <div className="card-body">
-        <h4 className="card-header text-primary bg-dark">	Ingresar Nuevo Paciente </h4>
-      </div>
 
-      {/* {
-              msgError &&
-              (<div className="auth__alert-error">
-                  { handleError(msgError) }
-              </div>
-              )
-          } */}
-
-      <form onSubmit={handleRegister} className="form-group">
-
-        <input
-          type="text"
-          placeholder="Ingresa tu nombre"
-          name="nombre"
-          autoComplete="off"
-          className="form-control"
-          value={nombre}
-          onChange={handleInputChange}
-        />
-
-        <input
-          type="text"
-          placeholder="apelldo"
-          name="apellido"
-          className="form-control"
-          autoComplete="off"
-          value={apellido}
-          onChange={handleInputChange}
-        />
-
-        <input
-          type="text"
-          placeholder="DNI"
-          name="dni"
-          className="form-control"
-          autoComplete="off"
-          value={dni}
-          onChange={handleInputChange}
-        />
-
-        {/* <input
-                  type="password"
-                  placeholder="Confirm password"
-                  name="password2"
-                  className="auth__input"
-                  value={password2}
-                  onChange={handleInputChange}
-              /> */}
+    <React.Fragment>
+      <Container fixed >
 
 
-        <button
-          type='submit'
-          className="btn btn-primary btn-block mb-5"
+        <Typography
+          variant="h3"
+          gutterBottom
+          sx={{
+            color: 'primary.dark',
+            bgcolor: 'success.light',
+            letterSpacing: 6,
+            textAlign: 'center'
+          }}>
+          Ingresar Datos de Paciente
+        </Typography>
+        <Box component="form" noValidate onSubmit={handleRegister} sx={{ mt: 3, padding: 2, border: '1px solid black' }}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                id="firstName"
+                name="nombre"
+                value={nombre}
+                onChange={handleInputChange}
+                label="Nombre"
+                fullWidth
+                autoComplete="given-name"
+                variant="standard"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id="address2"
+                name="apellido"
+                value={apellido}
+                onChange={handleInputChange}
+                label="Apellido"
+                fullWidth
+                autoComplete="family-name"
+                variant="standard"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                required
+                id="dni"
+                name="dni"
+                value={dni}
+                onChange={handleInputChange}
+                label="dni"
+                fullWidth
+                variant="standard"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                type="submit"
+                color='success'
+                fullWidth
+                sx={{ bgcolor: 'warning.light', fontSize: 14 }}
+              >
+                Guardar
+              </Button>
+            </Grid>
 
-        >
-          Confirmar
-        </button>
+          </Grid>
+        </Box>
 
-        <br></br>
+      </Container>
 
-        <Link
-          to="/"
-          className="btn btn-success btn-block mb-5"
-        >
-          Listado de Pacientes
-        </Link>
-      </form>
-    </div>
+
+      <Link
+        to="/dashboard"
+        className="btn btn-success btn-block mb-5"
+      >
+        Regresar
+      </Link>
+    </React.Fragment>
+
   )
 }
