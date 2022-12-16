@@ -22,7 +22,7 @@ export const startLoadingPacientes = createAsyncThunk(
   'profesional/startLoadingPacientes',
   async (profesionalId, thunkAPI) => {
     
-    const url = `http://${ ip }:8080/api/pacientesP/${profesionalId}`;
+    const url = `http://${ ip }:8080/api/pacientesAllActive/${profesionalId}`;
 
     const respuesta = await fetchConTokenMethod(url, null, 'GET');
     console.log(respuesta);

@@ -11,7 +11,7 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import { Link as LinkRouter } from 'react-router-dom';
-// import "./stylesDash.css";
+import "../../styles/stylesDash.css";
 
 
 export const mainListItems = (

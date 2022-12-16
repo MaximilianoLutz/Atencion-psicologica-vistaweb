@@ -5,7 +5,7 @@ import { ip } from '../../../ip';
 
 const initialState = {
   listadoPacientes: [],
-  active: { id: '', nombre: '', apellido: '', dni: '' }
+  active: { id: '', nombre: '', apellido: '', dni: '', active: false }
 }
 
 
@@ -20,7 +20,6 @@ export const guardarPaciente = createAsyncThunk(
     const respuesta = await fetchConTokenMethod(url, data, 'POST');
 
     return respuesta.json();
-    throw Error
   });
 
 
@@ -34,11 +33,17 @@ export const pacientesSlice = createSlice({
 
 
     },
-    setPacienteActual: (state, payload) => {
-      state.active = { ...payload }
+    setPacienteActual: (state, {payload}) => {
+      state.active.id = payload.id 
+      state.active.apellido = payload.apellido
+      state.active.nombre = payload.nombre
+      state.active.dni = payload.dni
+      state.active.active  = payload.acitve
+      console.log(payload);
+
 
     },
-    pacienteNull: (state) => {
+    setPacienteNull: (state) => {
       state.active = initialState.active
     },
       },
@@ -61,7 +66,7 @@ export const pacientesSlice = createSlice({
   },
 });
 
-export const { setPacientes, setPacienteActual, pacienteNull } = pacientesSlice.actions;
+export const { setPacientes, setPacienteActual, setPacienteNull } = pacientesSlice.actions;
 
 export const selectPacientes = (state) => state;
 

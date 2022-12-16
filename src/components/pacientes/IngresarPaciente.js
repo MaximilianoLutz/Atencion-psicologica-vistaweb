@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { fetchConTokenMethod } from '../../api/requestApi';
 import { useForm } from '../../hooks/useForm';
 
@@ -18,8 +18,8 @@ import { guardarPaciente } from '../../redux/features/Slices/pacientesSlice';
 
 export const IngresarPaciente = () => {
 
-  const { idHex } = useSelector(state => state.profesional.profesional);
-
+  const { profesional } = useSelector(state => state.profesional);
+  const { idHex } = profesional;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -27,6 +27,7 @@ export const IngresarPaciente = () => {
     nombre: '',
     apellido: '',
     dni: '',
+    active: true,
     p: {
       idHex
     }
@@ -34,26 +35,25 @@ export const IngresarPaciente = () => {
 
   const { nombre, apellido, dni } = formValues;
 
-  
+
   const handleRegister = async (e) => {
     e.preventDefault();
     console.log(formValues);
     const url = `http://${ip}:8080/api/pacientes`;
-    
+
     const data = await fetchConTokenMethod(url, formValues, 'POST');
     console.log(data);
 
-    if(data){
-      dispatch(guardarPaciente(formValues));
+    if (data.id) {
+      // dispatch(guardarPaciente(formValues));
       alert('Paciente guardado correctamente')
       reset();
     }
-
-
   }
 
-
-  console.log(formValues);
+  const handleReturn = () => {
+    navigate("/dashboard")
+  }
   return (
 
     <React.Fragment>
@@ -124,15 +124,21 @@ export const IngresarPaciente = () => {
           </Grid>
         </Box>
 
+
+        <Grid item xs={12} sm={6}>
+          <Button
+            onClick={handleReturn}
+            sx={{ color:'primary.dark', bgcolor: 'success.light', fontSize: 14 }}
+          >
+            Regresar
+          </Button>
+        </Grid>
+
       </Container>
 
 
-      <Link
-        to="/dashboard"
-        className="btn btn-success btn-block mb-5"
-      >
-        Regresar
-      </Link>
+
+
     </React.Fragment>
 
   )

@@ -123,7 +123,7 @@ export const SignIn = () => {
 
                   onClick={goSingUp}
                   variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {"¿No tienes tu cuenta aún? ¡Regístrate aquí!"}
                 </Button>
 
               </Grid>

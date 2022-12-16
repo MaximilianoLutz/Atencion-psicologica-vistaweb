@@ -78,8 +78,8 @@ export const authSlice = createSlice({
       state.uidAuth = null;
       state.name = null;
       state.profesionalesUser = [];
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('token-init-date');
+      sessionStorage.removeItem('access_token');
+      sessionStorage.removeItem('token-init-date');
 
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
@@ -95,8 +95,8 @@ export const authSlice = createSlice({
       })
       .addCase(startLogin.fulfilled, (state, action) => {
         console.log(action.payload);
-        localStorage.setItem('access_token', action.payload.access_token);
-        localStorage.setItem('token-init-date', new Date().getTime());
+        sessionStorage.setItem('access_token', action.payload.access_token);
+        sessionStorage.setItem('token-init-date', new Date().getTime());
         state.checking = false;
         state.uidAuth = action.payload.Uid;
         state.name = action.payload.Name;
@@ -114,7 +114,7 @@ export const authSlice = createSlice({
         console.log('pendingToken');
       })
       .addCase(startChecking.fulfilled, (state, action) => {
-        const token = localStorage.getItem('access_token');
+        const token = sessionStorage.getItem('access_token');
         const tokenSplit = token.split('.');
 
         let tkUser = atob(tokenSplit[1]);

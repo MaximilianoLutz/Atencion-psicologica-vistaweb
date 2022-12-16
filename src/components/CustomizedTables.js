@@ -12,7 +12,7 @@ import { TablePaciente } from './pacientes/TablePaciente';
 
 export const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: 'warning.main',
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -38,8 +38,8 @@ export default function CustomizedTables({ subjects }) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
+        <TableHead >
+          <TableRow sx={{ backgroundColor: 'warning.main' }}>
             <StyledTableCell>Nombre</StyledTableCell>
             <StyledTableCell align="right">Apellido</StyledTableCell>
             <StyledTableCell align="right">Detalle</StyledTableCell>

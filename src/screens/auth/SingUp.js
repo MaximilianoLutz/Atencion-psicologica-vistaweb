@@ -26,7 +26,7 @@ function Copyright(props) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        Atención Psicológica App
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -89,7 +89,7 @@ const { username, email, password, enabled } = formValues;
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Registrar cuenta
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -141,12 +141,7 @@ const { username, email, password, enabled } = formValues;
                   autoComplete="new-password"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
+             
             </Grid>
             <Button
               type="submit"
@@ -155,12 +150,12 @@ const { username, email, password, enabled } = formValues;
               variant="contained"
               sx={{ mt: 3, mb: 2, bgcolor: 'warning.main' }}
             >
-              Sign Up
+              Guardar cuenta
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="#" variant="body2">
-                  Already have an account? Sign in
+                  ¿Ya tienes cuenta? Ingresa aquí
                 </Link>
               </Grid>
             </Grid>

@@ -41,8 +41,7 @@ export const fetchToken = (username, password) => {
   const url = `http://${ip}:8080/oauth/token`;
 
   let encode = btoa('PacientesFront' + ':' + '1234$');
-  console.log(encode);
-
+  
   const params = `grant_type=password&username=${username}&password=${password}`
   const init = {
     method: 'POST',
@@ -58,7 +57,7 @@ export const fetchToken = (username, password) => {
 }
 
 export const validarToken = async () => {
-  const token = localStorage.getItem('access_token');
+  const token = sessionStorage.getItem('access_token');
 
   const url = `http://${ip}:8080/api/check_token`;
 
@@ -76,7 +75,7 @@ export const validarToken = async () => {
 }
 
 export const fetchConTokenMethod = async (url, data, method = 'GET') => {
-  const token = localStorage.getItem('access_token');
+  const token = sessionStorage.getItem('access_token');
   
 
   if (method === 'GET') {

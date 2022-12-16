@@ -7,6 +7,8 @@ import IngresarProfesional from '../screens/profesional/IngresarProfesional';
 import { setProfesionalActive } from '../redux/features/Slices/ProfesionalSlice';
 import { IngresarPaciente } from '../components/pacientes/IngresarPaciente';
 import { useEffect } from 'react';
+import { DatosFiliatoriosScreen } from '../screens/paciente/DatosFiliatoriosScreen';
+import { DatosDeContactoScreen } from '../screens/paciente/DatosDeContactoScreen';
 
 
 export const ProfesionalRouter = () => {
@@ -30,7 +32,11 @@ export const ProfesionalRouter = () => {
                 <Route exact path="/dashboard" element={<DashboardScreen />} />
                 <Route exact path="/inicio" element={<PreDashboard />} />
                 <Route exact path="/ingresarProfesional" element={<IngresarProfesional />} />
+
                 <Route exact path="/ingresarPaciente" element={<IngresarPaciente />} />
+                <Route exact path="/datosFiliatorios" element={<DatosFiliatoriosScreen />} />
+                <Route exact path="/datosDeContacto" element={<DatosDeContactoScreen />} />
+                
                 <Route path="/" element={< Navigate to="/dashboard" />} />
 
             </Routes>

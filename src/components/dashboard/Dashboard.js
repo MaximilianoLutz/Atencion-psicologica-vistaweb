@@ -97,40 +97,36 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mdTheme = createTheme();
 
 function DashboardContent() {
-  
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
 
 
-  const { profesional, pacientes } = useSelector( state => state.profesional );
-          
-  
-  let idProfesional = typeof(profesional?.idHex);
-  const redirection = () =>{
-    if (idProfesional != 'string'){
-      navigate('/inicio');      
-    }    
+  const { profesional, pacientes } = useSelector(state => state.profesional);
+
+
+  let idProfesional = typeof (profesional?.idHex);
+  const redirection = () => {
+    if (idProfesional != 'string') {
+      navigate('/inicio');
+    }
   }
 
   React.useEffect(() => {
-     redirection();  
-     dispatch(startLoadingPacientes(profesional.idHex))
-    }, [profesional])
-    
-    const handleLogout = () =>{
-      dispatch ( startLogout());
-    }
-    
-    const [open, setOpen] = React.useState(true);
-    const toggleDrawer = () => {
-      setOpen(!open);
-    };
-    
-    const cargar = ()=>{
-       
-      
+    redirection();
+    dispatch(startLoadingPacientes(profesional.idHex));
+  }, [profesional])
+
+  const handleLogout = () => {
+    dispatch(startLogout());
   }
+
+  const [open, setOpen] = React.useState(true);
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
+
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -140,6 +136,8 @@ function DashboardContent() {
           <Toolbar
             sx={{
               pr: '24px', // keep right padding when drawer closed
+              backgroundColor: 'success.main',
+              // opacity: 0.6
             }}
           >
             <IconButton
@@ -161,28 +159,25 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Le damos la bienvenida { profesional.nombre }  { profesional.apellido }
+              Le damos la bienvenida {profesional.nombre}  {profesional.apellido}
             </Typography>
             {/* <IconButton color="inherit" onClick={ handleLoadProf }>
                 <PeopleIcon />
                 <ListItemText primary="Prof" />
             </IconButton> */}
-            <IconButton color="inherit" onClick={ handleLogout }>
-                <LogoutIcon />
-                <ListItemText primary="Cerrar Sesion" />
-            </IconButton>
-            <IconButton color="inherit" onClick={ cargar }>
-                <LogoutIcon />
-                <ListItemText primary="Cargar" />
+            <IconButton color="inherit" onClick={handleLogout}>
+              <LogoutIcon />
+              <ListItemText primary="Cerrar Sesion" />
             </IconButton>
           </Toolbar>
         </AppBar>
-        <Drawer variant="permanent" open={open}>
+        <Drawer variant="permanent" open={open} >
           <Toolbar
             sx={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'flex-end',
+              backgroundColor: 'salmon',
               px: [1],
             }}
           >
@@ -222,7 +217,7 @@ function DashboardContent() {
                     height: 240,
                   }}
                 >
-              <Deposits />
+                  <Deposits />
                 </Paper>
               </Grid>
               {/* Recent Deposits */}
@@ -241,7 +236,7 @@ function DashboardContent() {
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <CustomizedTables subjects={pacientes} />
+                  <CustomizedTables subjects={pacientes} />
                   {/* <Orders /> */}
                 </Paper>
               </Grid>

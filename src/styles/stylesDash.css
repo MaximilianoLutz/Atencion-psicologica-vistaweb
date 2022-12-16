@@ -1,0 +1,11 @@
+.estiloBotonDash{
+    text-decoration:none;
+    color: black;
+}
+
+.resetColorMargin{
+    text-decoration:none;
+    color: black;
+    display: flex;
+    justify-content: left;
+}

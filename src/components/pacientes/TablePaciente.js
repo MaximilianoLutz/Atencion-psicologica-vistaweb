@@ -1,17 +1,22 @@
 import React from 'react';
-import { Button } from '@mui/material';
-// import { pacienteActual } from '../../action/pacientesActions';
 import { useDispatch } from 'react-redux';
-import { StyledTableRow, StyledTableCell } from '../CustomizedTables';
 import { NavLink } from 'react-router-dom';
+import { Button } from '@mui/material';
+import { StyledTableRow, StyledTableCell } from '../CustomizedTables';
+
+import { setPacienteActual, setPacienteNull } from '../../redux/features/Slices/pacientesSlice';
 
 
 export const TablePaciente = ({ paciente }) => {
     const dispatch = useDispatch();
 
-    // const handlePaciente = () => {
-    //     dispatch(pacienteActual(paciente));
-    // }
+    const handlePaciente = () => {
+        dispatch(setPacienteActual(paciente));
+    }
+
+    const handlePacienteNull = () => {
+        dispatch(setPacienteNull());
+    }
 
     return (
         <StyledTableRow>
@@ -21,7 +26,7 @@ export const TablePaciente = ({ paciente }) => {
             <StyledTableCell align="center">{paciente.apellido}</StyledTableCell>
             <StyledTableCell align="right">
                 <Button
-                    // onClick={handlePaciente}
+                    onClick={handlePaciente}
                     >
                     Ir al Detalle
                 </Button>
@@ -29,8 +34,8 @@ export const TablePaciente = ({ paciente }) => {
             </StyledTableCell>
             <StyledTableCell align="right">
                 <NavLink
-                    to='/historia'
-                    // onClick={handlePaciente}
+                    // to='/historia'
+                    onClick={handlePacienteNull}
                     className="estiloBotonDash"
                 >
                     <Button>
