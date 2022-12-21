@@ -13,7 +13,6 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import PeopleIcon from '@mui/icons-material/People';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
@@ -24,13 +23,8 @@ import { ListItemText } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 import { mainListItems, secondaryListItems } from './listItems';
-// import Chart from './Chart';
-import Deposits from './Deposits';
 
-
-import CustomizedTables from '../pacientes/CustomizedTables';
-import { startLogout } from '../../redux/features/Slices/authSlice';
-import { startLoadingPacientes } from '../../redux/features/Slices/ProfesionalSlice';
+import { startLogout } from '../../../redux/features/Slices/authSlice';
 
 
 function Copyright(props) {
@@ -101,20 +95,20 @@ function DashboardContent() {
 
 
 
-  const { profesional, pacientes } = useSelector(state => state.profesional);
+  const { active } = useSelector(state => state.pacientes);
 
 
-  let idProfesional = typeof (profesional?.idHex);
+
   const redirection = () => {
-    if (idProfesional !== 'string') {
+    if (active.id.lenght < 2) {
       navigate('/inicio');
     }
   }
 
   React.useEffect(() => {
     redirection();
-    dispatch(startLoadingPacientes(profesional.idHex));
-  }, [profesional])
+    // dispatch(startLoadingPacientes(profesional.idHex));
+  }, [active])
 
   const handleLogout = () => {
     dispatch(startLogout());
@@ -157,12 +151,9 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Le damos la bienvenida {profesional.nombre}  {profesional.apellido}
+              Pagina principal del paciente { active.nombre}  { active.apellido}
             </Typography>
-            {/* <IconButton color="inherit" onClick={ handleLoadProf }>
-                <PeopleIcon />
-                <ListItemText primary="Prof" />
-            </IconButton> */}
+           
             <IconButton color="inherit" onClick={handleLogout}>
               <LogoutIcon />
               <ListItemText primary="Cerrar Sesion" />
@@ -205,7 +196,7 @@ function DashboardContent() {
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-              {/* Chart */}
+              {/* Aqui tareas pendientes */}
               <Grid item xs={12} md={8} lg={9}>
                 <Paper
                   sx={{
@@ -215,10 +206,11 @@ function DashboardContent() {
                     height: 240,
                   }}
                 >
-                  <Deposits />
+                  {/* <Deposits /> */}
                 </Paper>
               </Grid>
-              {/* Recent Deposits */}
+
+              {/* Fechas importantes */}
               <Grid item xs={12} md={4} lg={3}>
                 <Paper
                   sx={{
@@ -228,15 +220,12 @@ function DashboardContent() {
                     height: 240,
                   }}
                 >
-                  <Deposits />
+                  {/* <Deposits /> */}
                 </Paper>
               </Grid>
-              {/* Recent Orders */}
+              Recent Orders
               <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <CustomizedTables subjects={pacientes} />
-                  {/* <Orders /> */}
-                </Paper>
+                
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
@@ -247,6 +236,10 @@ function DashboardContent() {
   );
 }
 
-export default function Dashboard() {
-  return <DashboardContent />;
+export const PacienteMainScreen = () => {
+
+    
+  return (
+    <DashboardContent />
+  )
 }

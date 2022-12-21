@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { TablePaciente } from './pacientes/TablePaciente';
+import { TablePaciente } from './TablePaciente';
 
 
 export const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -42,6 +42,7 @@ export default function CustomizedTables({ subjects }) {
           <TableRow sx={{ backgroundColor: 'warning.main' }}>
             <StyledTableCell>Nombre</StyledTableCell>
             <StyledTableCell align="right">Apellido</StyledTableCell>
+            <StyledTableCell align="right">DNI</StyledTableCell>
             <StyledTableCell align="right">Detalle</StyledTableCell>
             <StyledTableCell align="right">Historia Clinica</StyledTableCell>
           </TableRow>

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchConTokenMethod, fetchToken, validarToken } from '../../../api/requestApi';
+import { fetchConTokenMethod  } from '../../../api/requestApi';
 import { ip } from '../../../ip';
 
 
@@ -11,18 +11,16 @@ const initialState = {
 
 
 
-export const guardarPaciente = createAsyncThunk(
-  'profesional/startLoadingPacientes',
-  async (data, thunkAPI) => {
+export const gestionarDatosPaciente = createAsyncThunk(
+  'paciente/gestionarDatos',
+  async ({url, data, method}) => {
+    
+    console.log('-------------------------------');
+    console.log(url);
+    const respuesta = await fetchConTokenMethod(url, data, method);
 
-    const url = `http://${ip}:8080/api/pacientes`;
-
-    const respuesta = await fetchConTokenMethod(url, data, 'POST');
-
-    return respuesta.json();
+    return respuesta;
   });
-
-
 
 
 export const pacientesSlice = createSlice({
@@ -49,16 +47,16 @@ export const pacientesSlice = createSlice({
       },
       extraReducers: (builder) => {
         builder
-          .addCase(guardarPaciente.pending, (state) => {
+          .addCase(gestionarDatosPaciente.pending, (state) => {
 
-            console.log('pendingGuardarPaciente');
+            console.log('gestionarDatosPaciente');
           })
-          .addCase(guardarPaciente.fulfilled, (state, action) => {
+          .addCase(gestionarDatosPaciente.fulfilled, (state, action) => {
             console.log(action.payload);
 
             console.log('filfilled');
 
-          }).addCase(guardarPaciente.rejected, (state) => {
+          }).addCase(gestionarDatosPaciente.rejected, (state) => {
 
             console.log('rejectedGuardarPaciente');
           }) 

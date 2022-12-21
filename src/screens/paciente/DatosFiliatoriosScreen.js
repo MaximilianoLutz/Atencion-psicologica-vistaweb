@@ -1,25 +1,41 @@
-import React from 'react'
+import {
+  Button, Card, CardContent, Container, FormControl, Input, InputLabel, MenuItem, Select, Typography, TextField, Grid, Box
+} from '@mui/material';
 
-export const DatosFiliatoriosScreen = ({ pacienteActivo, uid }) => {
+import moment from 'moment/moment';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useForm } from '../../hooks/useForm';
+import { ip } from '../../ip';
+import { gestionarDatosPaciente } from '../../redux/features/Slices/pacientesSlice';
+
+export const DatosFiliatoriosScreen = () => {
+
+  const dispatch = useDispatch();
+
+  const { active: pacienteActivo } = useSelector(state => state.pacientes);
+  const { idHex: uid } = useSelector(state => state.profesional.profesional);
 
 
-  const nacimiento = moment('1980-02-02')
-  const nac = moment(nacimiento).format("yyyy-MM-DD");
 
-  const admi = moment().toDate();
-  const hoy = moment(admi).format("yyyy-MM-DD");
+
+  const nacimiento = moment('1950-02-02');
+  const nacimientoFormateado = moment(nacimiento).format("yyyy-MM-DD");
+
+  const admision = moment().toDate();
+  const hoy = moment(admision).format("yyyy-MM-DD");
 
 
   console.log(hoy);
 
-  const dt = (!!pacienteActivo.datosFiliatorios) ? { ...pacienteActivo.datosFiliatorios }
+  const datosPrevios = (!!pacienteActivo.datosFiliatorios) ? { ...pacienteActivo.datosFiliatorios }
     :
     {
       derivacion: "",
       estadoCivil: 0,
       estudios: 0,
       fechaAdmision: hoy,
-      fechaNacimiento: nac,
+      fechaNacimiento: nacimientoFormateado,
       genero: "",
       nacionalidad: "",
       ocupacion: ""
@@ -28,29 +44,28 @@ export const DatosFiliatoriosScreen = ({ pacienteActivo, uid }) => {
   console.log(pacienteActivo);
 
   const datos = {
-    derivacion: dt.derivacion,
-    estadoCivil: dt.estadoCivil,
-    estudios: dt.estudios,
-    fechaAdmision: dt.fechaAdmision,
-    fechaNacimiento: dt.fechaNacimiento,
-    genero: dt.genero,
-    nacionalidad: dt.nacionalidad,
-    ocupacion: dt.ocupacion,
+    derivacion: datosPrevios.derivacion,
+    estadoCivil: datosPrevios.estadoCivil,
+    estudios: datosPrevios.estudios,
+    fechaAdmision: datosPrevios.fechaAdmision,
+    fechaNacimiento: datosPrevios.fechaNacimiento,
+    genero: datosPrevios.genero,
+    nacionalidad: datosPrevios.nacionalidad,
+    ocupacion: datosPrevios.ocupacion,
   }
 
   if (!!pacienteActivo.contacto) {
     console.log('tiene');
-    var {id, ...res} = pacienteActivo.contacto;
+    var { id, ...res } = pacienteActivo.contacto;
     console.log(res);
-  }else{
+  } else {
     console.log('no tiene');
   }
 
 
   const [paciente, setPaciente] = useState({
-    ...pacienteActivo, contacto: {...res}, datosFiliatorios: { ...datos },
+    ...pacienteActivo, contacto: { ...res }, datosFiliatorios: { ...datos },
     p: {
-      id: null,
       idHex: uid,
       nombre: null,
       apellido: null,
@@ -109,11 +124,12 @@ export const DatosFiliatoriosScreen = ({ pacienteActivo, uid }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(paciente);
+    const dataFetch = {
+      url, data: paciente, method: 'PUT'
+    }
 
-    const [data, stats] = await crearPaciente(url, paciente).then(d => d);
-    console.log(data);
-    console.log(stats);
+    dispatch(gestionarDatosPaciente(dataFetch))
+
   }
 
   console.log(formValues);
@@ -121,25 +137,31 @@ export const DatosFiliatoriosScreen = ({ pacienteActivo, uid }) => {
 
 
   return (
-    <div className='container py-4'>
+    <Container fixed >
 
-    <Card variant="outlined">
-      <CardContent>
-        <Typography
-          align='center'
-          variant="h3"
-          color={"blue"}
-          bgcolor={"black"}
-        >
-          Editar Datos Filiatorios de <span>{paciente.nombre} </span>  <span>{paciente.apellido}</span>
-        </Typography>
+      <Card variant="outlined">
+        <CardContent>
+          <Typography
+            align='center'
+            variant="h3"
+            sx={{
+              color: 'primary.dark',
+              bgcolor: 'success.light',
+              letterSpacing: 4,
+              textAlign: 'center'
+            }}
+          >
+            Editar Datos Filiatorios de <span>{paciente.nombre} </span>  <span>{paciente.apellido}</span>
+          </Typography>
 
-      </CardContent>
-      <br />
+        </CardContent>
+      </Card>
 
-      <form onSubmit={handleSubmit}>
+      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3, padding: 2, border: '1px solid black' }}>
+        <Grid container spacing={3}>
 
-        {/* <MuiPickersUtilsProvider utils={DateFnsUtils} >
+
+          {/* <MuiPickersUtilsProvider utils={DateFnsUtils} >
           <Grid container justifyContent='space-around'>
             <KeyboardDatePicker
               //disableToolbar
@@ -158,7 +180,7 @@ export const DatosFiliatoriosScreen = ({ pacienteActivo, uid }) => {
         </MuiPickersUtilsProvider> */}
 
 
-        {/*      
+          {/*      
         <MuiPickersUtilsProvider utils={DateFnsUtils} >
         
             <KeyboardDatePicker
@@ -177,176 +199,190 @@ export const DatosFiliatoriosScreen = ({ pacienteActivo, uid }) => {
 
         </MuiPickersUtilsProvider> */}
 
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth>
+              <InputLabel id="estadoCivil">Estado Civil</InputLabel>
+              <Select
+                labelId="estadoCivil"
+                label="Estado Civil"
+                name="estadoCivil"
+                value={estadoCivil}
+                onChange={handleInputChange}
+              >
+                <MenuItem value={0}>Soltero/a</MenuItem>
+                <MenuItem value={1}>Casado/a</MenuItem>
+                <MenuItem value={2}>Divorsiado/a</MenuItem>
+                <MenuItem value={3}>Viudo/a</MenuItem>
+                <MenuItem value={4}>Separado/a</MenuItem>
+                <MenuItem value={5}>Concubinato</MenuItem>
 
-        <FormControl fullWidth>
-          <InputLabel id="estadoCivil">Estado Civil</InputLabel>
-          <Select
-            labelId="estadoCivil"
-            name="estadoCivil"
-            value={estadoCivil}
-            onChange={handleInputChange}
-            label="Age"
 
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+
+            <FormControl fullWidth>
+              <InputLabel id="estudios">Estudios</InputLabel>
+              <Select
+                label="Estudios"
+                labelId="estudios"
+                name="estudios"
+                value={estudios}
+                onChange={handleInputChange}
+              >
+                <MenuItem value={0}>Analfabeto</MenuItem>
+                <MenuItem value={1}>Primario incompleto</MenuItem>
+                <MenuItem value={2}>Primaro completo</MenuItem>
+                <MenuItem value={3}>Secundario incompleto</MenuItem>
+                <MenuItem value={4}>Secundario completo</MenuItem>
+                <MenuItem value={5}>Terciario incompleto</MenuItem>
+                <MenuItem value={6}>Terciario completo</MenuItem>
+                <MenuItem value={7}>Universitario incompletp</MenuItem>
+                <MenuItem value={8}>Universitario completo</MenuItem>
+                <MenuItem value={9}>Postgrado</MenuItem>
+
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+
+            <FormControl
+              fullWidth
+              margin={'normal'}
+            >
+              <InputLabel htmlFor="my-input" >Fecha de Admision</InputLabel>
+
+              <Input
+                id="my-input"
+                //aria-describedby="my-helper-text"
+                type="date"
+                name="fechaAdmision"
+                //autoComplete="off"
+                className="form-control"
+                value={fechaAdmision}
+                onChange={handleInputChange}
+                fullW datosPreviosh={false}
+
+              />
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <Input
+              type="date"
+              name='fechaNacimiento'
+              className="form-control"
+              value={fechaNacimiento}
+              onChange={handleInputChange}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+
+            <FormControl
+              fullWidth
+              margin={'normal'}
+            >
+
+
+              <InputLabel htmlFor="genero" >Genero</InputLabel>
+              <Input
+                id="genero"
+                aria-describedby="genero"
+                type="text"
+                placeholder="Genero"
+                name="genero"
+                autoComplete="off"
+                className="form-control"
+                value={genero}
+                onChange={handleInputChange}
+                fullW datosPreviosh={false}
+
+              />
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+
+            <FormControl
+              fullWidth
+              margin={'normal'}
+            >
+              <InputLabel htmlFor="nacionalidad" >Nacionalidad</InputLabel>
+              <Input
+                id="nacionalidad"
+                aria-describedby="my-helper-text"
+                type="text"
+                placeholder="Nacionalidad"
+                name="nacionalidad"
+                autoComplete="off"
+                className="form-control"
+                value={nacionalidad}
+                onChange={handleInputChange}
+                fullW datosPreviosh={false}
+
+              />
+            </FormControl>
+          </Grid>
+
+
+          <Grid item xs={12} sm={6}>
+
+            <FormControl
+              fullW datosPreviosh={true}
+              margin={'normal'}
+            >
+              <InputLabel htmlFor="derivacion" >Derivacion</InputLabel>
+              <Input
+                id="derivacion"
+                aria-describedby="my-helper-text"
+                type="text"
+                placeholder="Derivacion"
+                name="derivacion"
+                autoComplete="off"
+                className="form-control"
+                value={derivacion}
+                onChange={handleInputChange}
+                fullW datosPreviosh={false}
+
+              />
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+
+            <FormControl
+              fullW datosPreviosh={true}
+              margin={'normal'}
+            >
+              <InputLabel htmlFor="ocupacion" >Ocupacon</InputLabel>
+              <Input
+                id="ocupacion"
+                aria-describedby="my-helper-text"
+                type="text"
+                placeholder="Ingrese ocupacion"
+                name="ocupacion"
+                autoComplete="off"
+                className="form-control"
+                value={ocupacion}
+                onChange={handleInputChange}
+                fullW datosPreviosh={false}
+
+              />
+            </FormControl>
+          </Grid>
+
+          <Button
+            type="submit"
           >
-            <MenuItem value={0}>Soltero/a</MenuItem>
-            <MenuItem value={1}>Casado/a</MenuItem>
-            <MenuItem value={2}>Divorsiado/a</MenuItem>
-            <MenuItem value={3}>Viudo/a</MenuItem>
-            <MenuItem value={4}>Separado/a</MenuItem>
-            <MenuItem value={5}>Concubinato</MenuItem>
+            Guardar Datos Filiatorios
+          </Button>
+        </Grid>
+      </Box>
 
-
-          </Select>
-        </FormControl>
-
-
-        <FormControl fullWidth>
-          <InputLabel id="estudios">Estudios</InputLabel>
-          <Select
-            labelId="estudios"
-            name="estudios"
-            value={estudios}
-            onChange={handleInputChange}
-            label="Age"
-
-          >
-            <MenuItem value={0}>Analfabeto</MenuItem>
-            <MenuItem value={1}>Primario incompleto</MenuItem>
-            <MenuItem value={2}>Primaro completo</MenuItem>
-            <MenuItem value={3}>Secundario incompleto</MenuItem>
-            <MenuItem value={4}>Secundario completo</MenuItem>
-            <MenuItem value={5}>Terciario incompleto</MenuItem>
-            <MenuItem value={6}>Terciario completo</MenuItem>
-            <MenuItem value={7}>Universitario incompletp</MenuItem>
-            <MenuItem value={8}>Universitario completo</MenuItem>
-            <MenuItem value={9}>Postgrado</MenuItem>
-
-          </Select>
-        </FormControl>
-
-        <FormControl
-          fullWidth={true}
-          margin={'normal'}
-        >
-          <InputLabel htmlFor="my-input" >Fecha de Admision</InputLabel>
-
-          <Input
-            id="my-input"
-            //aria-describedby="my-helper-text"
-            type="date"
-            name="fechaAdmision"
-            //autoComplete="off"
-            className="form-control"
-            value={fechaAdmision}
-            onChange={handleInputChange}
-            fullWidth={false}
-
-          />
-        </FormControl>
-
-        <input
-          type="date"
-          name='fechaNacimiento'
-          className="form-control"
-          value={fechaNacimiento}
-          onChange={handleInputChange}
-        />
-
-
-        <FormControl
-          fullWidth={true}
-          margin={'normal'}
-        >
-
-
-          <InputLabel htmlFor="genero" >Genero</InputLabel>
-          <Input
-            id="genero"
-            aria-describedby="genero"
-            type="text"
-            placeholder="Genero"
-            name="genero"
-            autoComplete="off"
-            className="form-control"
-            value={genero}
-            onChange={handleInputChange}
-            fullWidth={false}
-
-          />
-        </FormControl>
-
-
-        <FormControl
-          fullWidth={true}
-          margin={'normal'}
-        >
-          <InputLabel htmlFor="nacionalidad" >Nacionalidad</InputLabel>
-          <Input
-            id="nacionalidad"
-            aria-describedby="my-helper-text"
-            type="text"
-            placeholder="Nacionalidad"
-            name="nacionalidad"
-            autoComplete="off"
-            className="form-control"
-            value={nacionalidad}
-            onChange={handleInputChange}
-            fullWidth={false}
-
-          />
-        </FormControl>
-
-        <FormControl
-          fullWidth={true}
-          margin={'normal'}
-        >
-          <InputLabel htmlFor="derivacion" >Derivacion</InputLabel>
-          <Input
-            id="derivacion"
-            aria-describedby="my-helper-text"
-            type="text"
-            placeholder="Derivacion"
-            name="derivacion"
-            autoComplete="off"
-            className="form-control"
-            value={derivacion}
-            onChange={handleInputChange}
-            fullWidth={false}
-
-          />
-        </FormControl>
-
-
-        <FormControl
-          fullWidth={true}
-          margin={'normal'}
-        >
-          <InputLabel htmlFor="ocupacion" >Ocupacon</InputLabel>
-          <Input
-            id="ocupacion"
-            aria-describedby="my-helper-text"
-            type="text"
-            placeholder="Ingrese ocupacion"
-            name="ocupacion"
-            autoComplete="off"
-            className="form-control"
-            value={ocupacion}
-            onChange={handleInputChange}
-            fullWidth={false}
-
-          />
-        </FormControl>
-
-        <Button
-          type="submit"
-        >
-          Guardar Datos Filiatorios
-        </Button>
-
-      </form>
-
-    </Card>
-
-  </div>
+    </Container>
   )
 }

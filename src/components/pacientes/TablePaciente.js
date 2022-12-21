@@ -1,17 +1,20 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
-import { StyledTableRow, StyledTableCell } from '../CustomizedTables';
+import { StyledTableRow, StyledTableCell } from './CustomizedTables';
 
 import { setPacienteActual, setPacienteNull } from '../../redux/features/Slices/pacientesSlice';
 
 
 export const TablePaciente = ({ paciente }) => {
+    
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handlePaciente = () => {
         dispatch(setPacienteActual(paciente));
+        navigate('/pacienteMainScreen');
     }
 
     const handlePacienteNull = () => {
@@ -24,6 +27,7 @@ export const TablePaciente = ({ paciente }) => {
                 {paciente.nombre}
             </StyledTableCell>
             <StyledTableCell align="center">{paciente.apellido}</StyledTableCell>
+            <StyledTableCell align="center">{paciente.dni}</StyledTableCell>
             <StyledTableCell align="right">
                 <Button
                     onClick={handlePaciente}
