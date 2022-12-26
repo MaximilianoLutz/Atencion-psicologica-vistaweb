@@ -1,10 +1,11 @@
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import {
   Button, Card, CardContent, Container, FormControl, Input, InputLabel, MenuItem, Select, Typography, TextField, Grid, Box
 } from '@mui/material';
-
 import moment from 'moment/moment';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+
 import { useForm } from '../../hooks/useForm';
 import { ip } from '../../ip';
 import { gestionarDatosPaciente } from '../../redux/features/Slices/pacientesSlice';
@@ -12,23 +13,23 @@ import { gestionarDatosPaciente } from '../../redux/features/Slices/pacientesSli
 export const DatosFiliatoriosScreen = () => {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { active: pacienteActivo } = useSelector(state => state.pacientes);
   const { idHex: uid } = useSelector(state => state.profesional.profesional);
 
 
 
-
-  const nacimiento = moment('1950-02-02');
-  const nacimientoFormateado = moment(nacimiento).format("yyyy-MM-DD");
+  //fechas de nacimiento y admision iniciales para datePicker
+  const nacimientoInicio = moment('1950-02-02');
+  const nacimientoFormateado = moment(nacimientoInicio).format("yyyy-MM-DD");
 
   const admision = moment().toDate();
   const hoy = moment(admision).format("yyyy-MM-DD");
 
 
-  console.log(hoy);
-
-  const datosPrevios = (!!pacienteActivo.datosFiliatorios) ? { ...pacienteActivo.datosFiliatorios }
+  //inicializo datosFiliatorios de paciente con datos previos si los hay sino creo objeto b
+  const datos = (!!pacienteActivo.datosFiliatorios) ? { ...pacienteActivo.datosFiliatorios }
     :
     {
       derivacion: "",
@@ -41,18 +42,16 @@ export const DatosFiliatoriosScreen = () => {
       ocupacion: ""
     };
 
-  console.log(pacienteActivo);
-
-  const datos = {
-    derivacion: datosPrevios.derivacion,
-    estadoCivil: datosPrevios.estadoCivil,
-    estudios: datosPrevios.estudios,
-    fechaAdmision: datosPrevios.fechaAdmision,
-    fechaNacimiento: datosPrevios.fechaNacimiento,
-    genero: datosPrevios.genero,
-    nacionalidad: datosPrevios.nacionalidad,
-    ocupacion: datosPrevios.ocupacion,
-  }
+  // const datos = {
+  //   derivacion: datosPrevios.derivacion,
+  //   estadoCivil: datosPrevios.estadoCivil,
+  //   estudios: datosPrevios.estudios,
+  //   fechaAdmision: datosPrevios.fechaAdmision,
+  //   fechaNacimiento: datosPrevios.fechaNacimiento,
+  //   genero: datosPrevios.genero,
+  //   nacionalidad: datosPrevios.nacionalidad,
+  //   ocupacion: datosPrevios.ocupacion,
+  // }
 
   if (!!pacienteActivo.contacto) {
     console.log('tiene');
@@ -66,14 +65,7 @@ export const DatosFiliatoriosScreen = () => {
   const [paciente, setPaciente] = useState({
     ...pacienteActivo, contacto: { ...res }, datosFiliatorios: { ...datos },
     p: {
-      idHex: uid,
-      nombre: null,
-      apellido: null,
-      matricula: null,
-      matricula2: null,
-      profesion: null,
-      email: null,
-      telefono: null,
+      idHex: uid
     }
   });
   const { datosFiliatorios } = paciente;
@@ -83,35 +75,6 @@ export const DatosFiliatoriosScreen = () => {
   const { derivacion, estadoCivil, estudios, fechaAdmision, fechaNacimiento, genero,
     nacionalidad, ocupacion } = formValues;
 
-
-  console.log(fechaAdmision);
-
-
-  // const handleFechaAdmisionAdapter = (event) => {
-
-  //   const fecha = moment(event).format('YYYY-MM-DD')
-
-  //   const target = {
-  //     name: 'fechaAdmision',
-  //     value: fecha
-  //   }
-
-  //   handleInputChange({ target });
-
-  // }
-
-  // const handleFechaNacimientoAdapter = (event) => {
-
-  //   const fecha = moment(event).format('YYYY-MM-DD')
-
-  //   const target = {
-  //     name: 'fechaNacimiento',
-  //     value: fecha
-  //   }
-
-  //   handleInputChange({ target });
-
-  // }
 
   const url = `http://${ip}:8080/api/datos`;
 
@@ -124,17 +87,18 @@ export const DatosFiliatoriosScreen = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const dataFetch = {
+    const objetoFetch = {
       url, data: paciente, method: 'PUT'
     }
 
-    dispatch(gestionarDatosPaciente(dataFetch))
+    dispatch(gestionarDatosPaciente(objetoFetch))
 
   }
 
-  console.log(formValues);
 
-
+  const handleReturn = () => {
+    navigate("/pacienteMainScreen");
+  }
 
   return (
     <Container fixed >
@@ -159,45 +123,6 @@ export const DatosFiliatoriosScreen = () => {
 
       <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3, padding: 2, border: '1px solid black' }}>
         <Grid container spacing={3}>
-
-
-          {/* <MuiPickersUtilsProvider utils={DateFnsUtils} >
-          <Grid container justifyContent='space-around'>
-            <KeyboardDatePicker
-              //disableToolbar
-              variant='inline'
-              format='dd/MM/yyyy'
-              margin='normal'
-              id='date-picker'
-              label='Fecha de Admision'
-              value={fechaAdmision}
-              onChange={handleFechaAdmisionAdapter}
-
-            />
-
-          </Grid>
-
-        </MuiPickersUtilsProvider> */}
-
-
-          {/*      
-        <MuiPickersUtilsProvider utils={DateFnsUtils} >
-        
-            <KeyboardDatePicker
-              disableToolbar
-              //variant='inline'
-              format='dd/MM/yyyy'
-             // margin='normal'
-              id='date-picker'
-              label='Fecha de Nacimiento'
-              value={fechaNacimiento}
-              onChange={handleFechaNacimientoAdapter}
-
-            />
-
-        
-
-        </MuiPickersUtilsProvider> */}
 
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
@@ -253,7 +178,7 @@ export const DatosFiliatoriosScreen = () => {
               fullWidth
               margin={'normal'}
             >
-              <InputLabel htmlFor="my-input" >Fecha de Admision</InputLabel>
+              <InputLabel htmlFor="my-input">Fecha de Admision</InputLabel>
 
               <Input
                 id="my-input"
@@ -264,7 +189,7 @@ export const DatosFiliatoriosScreen = () => {
                 className="form-control"
                 value={fechaAdmision}
                 onChange={handleInputChange}
-                fullW datosPreviosh={false}
+                fullWidth={false}
 
               />
             </FormControl>
@@ -299,7 +224,7 @@ export const DatosFiliatoriosScreen = () => {
                 className="form-control"
                 value={genero}
                 onChange={handleInputChange}
-                fullW datosPreviosh={false}
+                fullWidth={false}
 
               />
             </FormControl>
@@ -322,7 +247,7 @@ export const DatosFiliatoriosScreen = () => {
                 className="form-control"
                 value={nacionalidad}
                 onChange={handleInputChange}
-                fullW datosPreviosh={false}
+                fullWidth={false}
 
               />
             </FormControl>
@@ -332,7 +257,7 @@ export const DatosFiliatoriosScreen = () => {
           <Grid item xs={12} sm={6}>
 
             <FormControl
-              fullW datosPreviosh={true}
+              fullWidth ={true}
               margin={'normal'}
             >
               <InputLabel htmlFor="derivacion" >Derivacion</InputLabel>
@@ -346,7 +271,7 @@ export const DatosFiliatoriosScreen = () => {
                 className="form-control"
                 value={derivacion}
                 onChange={handleInputChange}
-                fullW datosPreviosh={false}
+                fullWidth={false}
 
               />
             </FormControl>
@@ -355,7 +280,7 @@ export const DatosFiliatoriosScreen = () => {
           <Grid item xs={12} sm={6}>
 
             <FormControl
-              fullW datosPreviosh={true}
+              fullWidth={true}
               margin={'normal'}
             >
               <InputLabel htmlFor="ocupacion" >Ocupacon</InputLabel>
@@ -369,7 +294,7 @@ export const DatosFiliatoriosScreen = () => {
                 className="form-control"
                 value={ocupacion}
                 onChange={handleInputChange}
-                fullW datosPreviosh={false}
+                fullWidth={false}
 
               />
             </FormControl>
@@ -381,6 +306,16 @@ export const DatosFiliatoriosScreen = () => {
             Guardar Datos Filiatorios
           </Button>
         </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <Button
+            onClick={handleReturn}
+            sx={{ color: 'primary.dark', bgcolor: 'success.light', fontSize: 14 }}
+          >
+            Regresar
+          </Button>
+        </Grid>
+
       </Box>
 
     </Container>

@@ -4,19 +4,26 @@ import { ip } from '../../../ip';
 
 
 const initialState = {
-  listadoPacientes: [],
+  detallePaciente:{},
   active: { id: '', nombre: '', apellido: '', dni: '', active: false }
 }
 
 
+export const StartLoadingPacienteById = createAsyncThunk(
+  'paciente/getPacienteById',
+  async (id) => {
+    
+    const url = `http://${ip}:8080/api/pacientes/${id}`;
 
+    const paciente = await fetchConTokenMethod(url, id);
+
+    return paciente;
+  });
 
 export const gestionarDatosPaciente = createAsyncThunk(
   'paciente/gestionarDatos',
   async ({url, data, method}) => {
     
-    console.log('-------------------------------');
-    console.log(url);
     const respuesta = await fetchConTokenMethod(url, data, method);
 
     return respuesta;
@@ -27,16 +34,13 @@ export const pacientesSlice = createSlice({
   name: 'pacientes',
   initialState,
   reducers: {
-    setPacientes: (state, payload) => {
-
-
-    },
     setPacienteActual: (state, {payload}) => {
       state.active.id = payload.id 
       state.active.apellido = payload.apellido
       state.active.nombre = payload.nombre
       state.active.dni = payload.dni
       state.active.active  = payload.acitve
+    
       console.log(payload);
 
 
@@ -59,7 +63,22 @@ export const pacientesSlice = createSlice({
           }).addCase(gestionarDatosPaciente.rejected, (state) => {
 
             console.log('rejectedGuardarPaciente');
-          }) 
+
+          }).addCase(StartLoadingPacienteById.pending, (state)=>{
+
+            console.log('pacientesByIdPending');
+          })
+          .addCase(StartLoadingPacienteById.fulfilled, (state, action) => {
+            console.log(action.payload);
+            state.detallePaciente = action.payload
+
+            console.log('filfilledPacienteById');
+
+          }).addCase(StartLoadingPacienteById.rejected, (state) => {
+
+            console.log('rejectedrPacienteById');
+            
+          })
 
   },
 });

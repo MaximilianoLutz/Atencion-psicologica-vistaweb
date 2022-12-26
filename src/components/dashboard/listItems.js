@@ -26,12 +26,12 @@ export const mainListItems = (
       </ListItemButton>
     </LinkRouter>
 
-    <LinkRouter to='/pacientesP' className="estiloBotonDash">
+    <LinkRouter to='/editarProfesionalScreen' className="estiloBotonDash">
       <ListItemButton >
         <ListItemIcon>
           <PeopleIcon />
         </ListItemIcon>
-        <ListItemText primary="Pacientes" />
+        <ListItemText primary="Editar Profesional" />
       </ListItemButton >
     </LinkRouter>
 

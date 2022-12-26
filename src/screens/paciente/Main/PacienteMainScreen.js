@@ -19,12 +19,15 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
-import { ListItemText } from '@mui/material';
+import { Button, Card, ListItemText } from '@mui/material';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 import { mainListItems, secondaryListItems } from './listItems';
 
 import { startLogout } from '../../../redux/features/Slices/authSlice';
+import { StartLoadingPacienteById } from '../../../redux/features/Slices/pacientesSlice';
 
 
 function Copyright(props) {
@@ -32,7 +35,7 @@ function Copyright(props) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        Atención psicológica App
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -96,6 +99,8 @@ function DashboardContent() {
 
 
   const { active } = useSelector(state => state.pacientes);
+  const { detallePaciente } = useSelector(state => state.pacientes);
+  const { datosFiliatorios, contacto } = detallePaciente;
 
 
 
@@ -105,10 +110,15 @@ function DashboardContent() {
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     redirection();
-    // dispatch(startLoadingPacientes(profesional.idHex));
-  }, [active])
+  }, [active]);
+
+  useEffect(() => {
+    dispatch(StartLoadingPacienteById(active.id))
+  }, [active]);
+
+
 
   const handleLogout = () => {
     dispatch(startLogout());
@@ -151,9 +161,9 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Pagina principal del paciente { active.nombre}  { active.apellido}
+              Pagina principal del paciente:  {active.nombre},  {active.apellido} DNI: {active.dni}
             </Typography>
-           
+
             <IconButton color="inherit" onClick={handleLogout}>
               <LogoutIcon />
               <ListItemText primary="Cerrar Sesion" />
@@ -195,38 +205,122 @@ function DashboardContent() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
+            <Grid item xs>
+              Detalle de Datos del Paciente {active.nombre} {active.apellido}
+            </Grid>
+
+            <Grid container spacing={2} sx={{ mt: 4, mb: 4 }} direction="row">
+
+              {
+                (detallePaciente.datosFiliatorios)
+                  ?
+                  /* Datos filiatorios */
+                  <Grid item xs={6}>
+                    <Card>
+                      <CardContent>
+                        <Typography color={'primary.main'}>EstadoCivil: {datosFiliatorios.estadoCivil}</Typography>
+                        <Typography>Estudios: {datosFiliatorios.estudios} </Typography>
+                        <Typography color={'primary.main'}>Nacionalidad: {datosFiliatorios.nacionalidad}</Typography>
+                        <Typography color={'primary.main'}>Derivacion: {datosFiliatorios.derivacion}</Typography>
+                        <Typography color={'primary.main'}>Genero: {datosFiliatorios.genero}</Typography>
+                        <Typography color={'primary.main'}>FechaAdmision: {datosFiliatorios.fechaAdmision}</Typography>
+                        <Typography color={'primary.main'}>FechaNacimiento: {datosFiliatorios.fechaNacimiento}</Typography>
+                      </CardContent>
+
+                      <CardActions>
+                        <Button
+                          size="small"
+                          onClick={() => (console.log('editar'))}
+                        >
+                          Editar Datos Filiatorios
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                  :
+                  <Grid item xs={6}>
+                    <Button
+                      onClick={() => navigate('/datosFiliatoriosScreen')}
+                    >
+                      <Typography color={'darkred'}>Agregar Datos Filiatorios</Typography>
+
+                    </Button>
+                  </Grid>
+              }
+
+              {
+                (detallePaciente.contacto)
+                  ?
+                  /* Datos de Contcto */
+                  <Grid item xs>
+                    <Card>
+                      <CardContent>
+                        <Typography color={'primary.main'}>Direccion: {contacto.direccion}</Typography>
+                        <Typography>Telefono: {contacto.telefono} </Typography>
+                        <Typography color={'primary.main'}>Email: {contacto.email}</Typography>
+                        <Typography color={'primary.main'}>Cuit: {contacto.cuit}</Typography>
+                        <Typography color={'primary.main'}>ObraSocial: {contacto.obraSocial}</Typography>
+                      </CardContent>
+
+                      <CardActions>
+                        <Button
+                          size="small"
+                          onClick={() => (console.log('editar'))}
+                        >
+                          Editar Datos de Contacto
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                  :
+                  <Grid item xs={6}>
+                    <Button
+                      onClick={() => navigate('/datosDeContactoScreen')}
+                    >
+                      <Typography color={'darkred'}>Agregar Datos de Contacto</Typography>
+
+                    </Button>
+                  </Grid>
+              }
+            </Grid>
+
+
+            <Grid container spacing={2}>
               {/* Aqui tareas pendientes */}
-              <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                  {/* <Deposits /> */}
-                </Paper>
+
+              <Grid item xs>
+                <Card>
+                  <CardContent>
+
+                    <Typography color={'primary.main'}>EstadoCivil: </Typography>
+                    <Typography>Estudios:  </Typography>
+                    <Typography color={'primary.main'}>Nacionalidad: </Typography>
+                    <Typography color={'primary.main'}>Derivacion: </Typography>
+                    <Typography color={'primary.main'}>Genero:</Typography>
+                    <Typography color={'primary.main'}>FechaAdmision: </Typography>
+                    <Typography color={'primary.main'}>FechaNacimiento: </Typography>
+
+                  </CardContent>
+
+                  <CardActions>
+                    <Button
+                      size="small"
+                      onClick={() => (console.log('editar'))}
+                    >
+                      Editar Datos Filiatorios
+                    </Button>
+                  </CardActions>
+                </Card>
               </Grid>
 
+
               {/* Fechas importantes */}
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                  {/* <Deposits /> */}
-                </Paper>
+              <Grid item xs>
+                <Card>
+
+                </Card>
               </Grid>
-              Recent Orders
-              <Grid item xs={12}>
-                
-              </Grid>
+
             </Grid>
             <Copyright sx={{ pt: 4 }} />
           </Container>
@@ -238,7 +332,7 @@ function DashboardContent() {
 
 export const PacienteMainScreen = () => {
 
-    
+
   return (
     <DashboardContent />
   )

@@ -13,12 +13,12 @@ import { ip } from '../../ip';
 import { fetchConTokenMethod } from '../../api/requestApi';
 import { useNavigate } from 'react-router-dom';
 
-export default function IngresarProfesional() {
+export default function IngresarProfesional({profesionalEdit}) {
 
   const navigate = useNavigate();
   const { uidAuth } = useSelector(state => state.auth);
 
-  const [formValues, handleInputChange] = useForm({
+  const profesionalInitValue = (!!profesionalEdit) ? (profesionalEdit) : ({
     nombre: '',
     apellido: '',
     matricula: '',
@@ -28,7 +28,11 @@ export default function IngresarProfesional() {
     telefono: ''
   });
 
+  const [formValues, handleInputChange] = useForm({...profesionalInitValue});
+
   const { nombre, apellido, matricula, matricula2, profesion, email, telefono } = formValues;
+
+  console.log(formValues);
 
   const irAlInicio = ()=>{
     navigate('/inicio')
@@ -40,7 +44,6 @@ export default function IngresarProfesional() {
       ...formValues,
       uAuth: { uid: uidAuth }
     }
-    console.log(profesional);
 
     const url = `http://${ip}:8080/api/entrypoint/profesional`
 

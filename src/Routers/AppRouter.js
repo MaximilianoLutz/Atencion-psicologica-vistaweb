@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Routes,
@@ -13,6 +13,7 @@ import { PrivateRoutes } from "./PrivateRoutes";
 import { PublicRoutes } from "./PublicRoutes";
 import SignUp from "../screens/auth/SingUp";
 import '../styles/spinner.css'
+import { setProfesionalActive } from "../redux/features/Slices/ProfesionalSlice";
 
 
 
@@ -20,7 +21,8 @@ export default function AppRouter() {
 
   const dispatch = useDispatch();
 
-  const { checking, uidAuth } = useSelector(state => state.auth);
+  const { checking, uidAuth, profesionalesUser } = useSelector(state => state.auth);
+  const { profesional } = useSelector(state => state.profesional);
 
   useEffect(() => {
 
@@ -42,12 +44,13 @@ export default function AppRouter() {
     }
   }, [dispatch, uidAuth, checking]);
 
+
   if (checking)
     return (
-      <div className="spinner-container"> <div className="spinner"></div> </div> 
+      <div className="spinner-container"> <div className="spinner"></div> </div>
     )
 
-  
+
   return (
     <HashRouter>
       <Routes>

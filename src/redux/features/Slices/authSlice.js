@@ -49,21 +49,21 @@ export const startLoadingProfesionalList = createAsyncThunk(
 
 
     const profesionales = await fetchConTokenMethod(url, {}, 'GET');
-    if(profesionales){
+    if (profesionales) {
       return profesionales;
-    }else{
+    } else {
       throw Error
     }
   });
 
-  export const startLogout = createAsyncThunk(
-    'auth/startLogin',
-    async (data, thunkAPI) => {
-      thunkAPI.dispatch(clearProfesionalActive());
-      thunkAPI.dispatch(logout());
+export const startLogout = createAsyncThunk(
+  'auth/startLogin',
+  async (data, thunkAPI) => {
+    thunkAPI.dispatch(clearProfesionalActive());
+    thunkAPI.dispatch(logout());
 
-    }
-  );
+  }
+);
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -90,28 +90,26 @@ export const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(startLogin.pending, (state) => {
-        state.checking = true;
-        console.log('pending');
+        state.checking = true
       })
       .addCase(startLogin.fulfilled, (state, action) => {
-        console.log(action.payload);
+
         sessionStorage.setItem('access_token', action.payload.access_token);
         sessionStorage.setItem('token-init-date', new Date().getTime());
         state.checking = false;
         state.uidAuth = action.payload.Uid;
         state.name = action.payload.Name;
-        console.log('filfilled');
 
       }).addCase(startLogin.rejected, (state) => {
         state.checking = true;
         state.uidAuth = null;
         state.name = null;
         state.profesionalesUser = [];
-        console.log('rejected');
+        sessionStorage.removeItem('access_token');
+        sessionStorage.removeItem('token-init-date');
       })
       .addCase(startChecking.pending, (state) => {
-        // state.checking = true;
-        console.log('pendingToken');
+      
       })
       .addCase(startChecking.fulfilled, (state, action) => {
         const token = sessionStorage.getItem('access_token');
@@ -124,24 +122,21 @@ export const authSlice = createSlice({
         state.uidAuth = userJson.Uid;
         state.name = userJson.Name;
 
-        console.log('filfilledToken');
-
       }).addCase(startChecking.rejected, (state) => {
         state.checking = false;
         state.uidAuth = null;
         state.name = null;
         state.profesionalesUser = [];
-        console.log('rejectedToken');
+
       }).addCase(startLoadingProfesionalList.pending, (state) => {
-        console.log('proListProf');
+
       }).addCase(startLoadingProfesionalList.fulfilled,
         (state, action) => {
           state.profesionalesUser = action.payload
-          console.log('fullFilledProf');
+
         }).addCase(startLoadingProfesionalList.rejected,
           (state) => {
             state.profesionalesUser = [];
-            console.log('rejectedProf');
           }
         );
   },

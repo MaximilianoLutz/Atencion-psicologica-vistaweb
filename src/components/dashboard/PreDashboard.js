@@ -8,49 +8,62 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 
 import ProfesionalesList from '../profesional/ProfesionalesList';
-import { clearProfesionalActive, startLoadingPacientes } from '../../redux/features/Slices/ProfesionalSlice';
+import { clearProfesionalActive, setProfesionalActive } from '../../redux/features/Slices/ProfesionalSlice';
 import { startLoadingProfesionalList } from '../../redux/features/Slices/authSlice';
 
 export const PreDashboard = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const { profesionalesUser } = useSelector(state => state.auth);
     const { profesional } = useSelector( state => state.profesional );
-    const {  profesionalesUser } = useSelector(state => state.auth);
-
+    
     useEffect(() => {
-      dispatch(clearProfesionalActive())
+        dispatch(clearProfesionalActive())
     }, [dispatch])
 
     useEffect(() => {
-        dispatch( startLoadingProfesionalList())
+        dispatch(startLoadingProfesionalList())
     }, [dispatch])
 
     useEffect(() => {
-        
+
         setProfesionales(profesionalesUser);
     }, [profesionalesUser])
-    
-    
+
+
     const [profesionales, setProfesionales] = useState([]);
 
     const handleFindProfe = async () => {
-        
+
         setProfesionales(profesionalesUser);
         console.log(profesionales);
     }
 
-    let idProf = typeof(profesional?.idHex);
-    
-    const redirection = () =>{
-        if (idProf == 'string'){
-            navigate('/dashboard');      
-        }    
+    let idProf = typeof (profesional?.idHex);
+
+    const redirection = () => {
+        if (idProf === 'string') {
+            navigate('/dashboard');
+        }
     }
     useEffect(() => {
-        redirection();  
-        // dispatch(startLoadingPacientes(profesional.idHex))
-     }, [profesional]);
+        redirection();
+    }, [profesional]);
+
+    const uniqueProfesional = () => {
+        if (profesionalesUser.length === 1) {
+            const [profesional] = profesionalesUser;
+                dispatch(setProfesionalActive(profesional));
+            console.log(profesional);
+        }
+    }
+
+    useEffect(() => {
+        uniqueProfesional();
+    }, [profesionalesUser]);
+
 
     const mdTheme = createTheme();
 
@@ -124,12 +137,12 @@ export const PreDashboard = () => {
                             </Grid>
 
                             <NavLink
-                                        to="/dashboard"
-                                        className="resetColorMargin"
-                                    >
-                                        <Typography >
-                                            Ir al Menu 
-                                        </Typography>
+                                to="/dashboard"
+                                className="resetColorMargin"
+                            >
+                                <Typography >
+                                    Ir al Menu
+                                </Typography>
                             </NavLink>
                         </Grid>
                     </Container>

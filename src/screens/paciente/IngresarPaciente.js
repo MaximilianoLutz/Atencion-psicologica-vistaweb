@@ -54,6 +54,8 @@ export const IngresarPaciente = () => {
   const handleReturn = () => {
     navigate("/dashboard")
   }
+
+  
   return (
 
     <React.Fragment>
