@@ -48,7 +48,7 @@ export default function CustomizedTables({ subjects }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {subjects.map((subject) => (
+          {subjects?.map((subject) => (
             <TablePaciente paciente={subject} key={subject.id} />
           ))}
         </TableBody>

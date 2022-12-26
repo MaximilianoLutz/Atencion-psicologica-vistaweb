@@ -5,7 +5,7 @@ import { ip } from '../../../ip';
 
 const initialState = {
   detallePaciente:{},
-  active: { id: '', nombre: '', apellido: '', dni: '', active: false }
+  active: { id: null, nombre: '', apellido: '', dni: '', active: false }
 }
 
 

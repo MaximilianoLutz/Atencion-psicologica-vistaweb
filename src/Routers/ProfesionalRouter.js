@@ -1,15 +1,15 @@
 import React from 'react';
-import { DashboardScreen } from '../screens/DashboardScreen';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+
 import { PreDashboard } from '../components/dashboard/PreDashboard';
+import { DashboardScreen } from '../screens/DashboardScreen';
 import IngresarProfesional from '../screens/profesional/IngresarProfesional';
-import { setProfesionalActive } from '../redux/features/Slices/ProfesionalSlice';
+import { EditarProfesionalScreen } from '../screens/profesional/EditarProfesionalScreen';
 import { IngresarPaciente } from '../screens/paciente/IngresarPaciente';
+import { PacienteMainScreen } from '../screens/paciente/Main/PacienteMainScreen';
 import { DatosFiliatoriosScreen } from '../screens/paciente/DatosFiliatoriosScreen';
 import { DatosDeContactoScreen } from '../screens/paciente/DatosDeContactoScreen';
-import { PacienteMainScreen } from '../screens/paciente/Main/PacienteMainScreen';
-import { EditarProfesionalScreen } from '../screens/profesional/EditarProfesionalScreen';
+import { HistoriaClinicaScreen } from '../screens/paciente/HistoriaClinicaScreen';
 
 
 export const ProfesionalRouter = () => {
@@ -20,16 +20,19 @@ export const ProfesionalRouter = () => {
 
             <Routes> 
 
-                <Route exact path="/dashboard" element={<DashboardScreen />} />
                 <Route exact path="/inicio" element={<PreDashboard />} />
+                <Route exact path="/dashboard" element={<DashboardScreen />} />
+
                 <Route exact path="/ingresarProfesional" element={<IngresarProfesional />} />
                 <Route exact path="/editarProfesionalScreen" element={<EditarProfesionalScreen />} />
 
 
+                <Route exact path="/ingresarPaciente" element={<IngresarPaciente />} />
                 <Route exact path="/pacienteMainScreen" element={<PacienteMainScreen />} />
                 <Route exact path="/datosFiliatoriosScreen" element={<DatosFiliatoriosScreen />} />
                 <Route exact path="/datosDeContactoScreen" element={<DatosDeContactoScreen />} />
-                <Route exact path="/ingresarPaciente" element={<IngresarPaciente />} />
+                <Route exact path="/historiaClinicaScreen" element={<HistoriaClinicaScreen />} />
+
 
                 <Route path="/" element={< Navigate to="/inicio" />} />
 

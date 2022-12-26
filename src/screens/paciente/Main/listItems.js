@@ -78,7 +78,7 @@ export const secondaryListItems = (
       </ListItemIcon>
       <ListItemText primary="Integrations" />
     </ListItemButton>
-    <LinkRouter to="/historia" className="estiloBotonDash" >
+    <LinkRouter to="/historiaClinicaScreen" className="estiloBotonDash" >
       <ListItemButton>
         <ListItemIcon>
           <AssignmentIcon />
