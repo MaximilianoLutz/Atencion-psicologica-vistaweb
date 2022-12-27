@@ -41,7 +41,7 @@ export const fetchToken = (username, password) => {
   const url = `http://${ip}:8080/oauth/token`;
 
   let encode = btoa('PacientesFront' + ':' + '1234$');
-  
+
   const params = `grant_type=password&username=${username}&password=${password}`
   const init = {
     method: 'POST',
@@ -76,7 +76,7 @@ export const validarToken = async () => {
 
 export const fetchConTokenMethod = async (url, data, method = 'GET') => {
   const token = sessionStorage.getItem('access_token');
-  
+
 
   if (method === 'GET') {
     try {
@@ -109,6 +109,50 @@ export const fetchConTokenMethod = async (url, data, method = 'GET') => {
   } catch (error) {
     console.log(error);
     return [];
+  }
+
+}
+
+
+export const fetchConTokenBlob = async (url, data, method = 'GET') => {
+  const token = sessionStorage.getItem('access_token');
+
+
+  if (method === 'GET') {
+    try {
+
+      const respuesta = await fetch(url, {
+        method: method,
+        headers: {
+          'authorization': 'Bearer ' + token
+        }
+      });
+
+      const pdf = await respuesta.blob().then(pdf => pdf);
+
+      const fileURL = URL.createObjectURL(pdf);
+
+      window.open(fileURL);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  try {
+
+    return await fetch(url, {
+      method: method,
+      body: JSON.stringify(data),
+      headers: {
+        'authorization': 'Bearer ' + token,
+        'Content-ype': 'application/json'
+      }
+    });
+
+  } catch (error) {
+    console.log(error);
+    return null;
   }
 
 }

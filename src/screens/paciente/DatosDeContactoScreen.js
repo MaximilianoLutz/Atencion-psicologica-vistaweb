@@ -153,7 +153,7 @@ export const DatosDeContactoScreen = () => {
           <Grid item xs={12} sm={6}>
 
             <FormControl
-              fullW datosPreviosh={true}
+              fullWidth={true}
               margin={'normal'}
             >
               <InputLabel htmlFor="email" >Email</InputLabel>

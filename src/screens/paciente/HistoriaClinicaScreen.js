@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
+import { saveAs } from 'file-saver';
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -10,7 +11,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
-import { fetchConTokenMethod } from '../../api/requestApi';
+import { fetchConTokenBlob, fetchConTokenMethod } from '../../api/requestApi';
 import { ip } from '../../ip';
 import { useForm } from '../../hooks/useForm';
 
@@ -46,7 +47,7 @@ export const HistoriaClinicaScreen = () => {
 
   const urlPost = `http://${ip}:8080/api/historia`;
 
-  const urlGet = `http://${ip}:8080/api/historias/${id}`;
+  const urlGet = `http://${ip}:8080/api/historiaspdf/${id}`;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -65,11 +66,9 @@ export const HistoriaClinicaScreen = () => {
 
   const handleGetHistoria = async (e) => {
     e.preventDefault();
-    const respuestaPdf = await fetchConTokenMethod(urlGet, null); 
-    // const pdf =  await respuestaPdf.blob().then(p=>p);
 
+    const respuestaPdf = await fetchConTokenBlob(urlGet, null);
     
-        console.log(respuestaPdf);
   }
   return (
 
