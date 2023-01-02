@@ -102,7 +102,7 @@ function DashboardContent() {
   const { detallePaciente } = useSelector(state => state.pacientes);
   const { datosFiliatorios, contacto } = detallePaciente;
 
-
+console.log(detallePaciente);
 
   const redirection = () => {
     if (active.id.lenght < 2) {

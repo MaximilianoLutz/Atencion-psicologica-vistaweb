@@ -11,20 +11,24 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
-import { fetchConTokenBlob, fetchConTokenMethod } from '../../api/requestApi';
-import { ip } from '../../ip';
-import { useForm } from '../../hooks/useForm';
+import {  fetchConTokenMethod } from '../../../api/requestApi';
+import { ip } from '../../../ip';
+import { useForm } from '../../../hooks/useForm';
 
 
 
 
 
-export const HistoriaClinicaScreen = () => {
+export const RedactarHistoriaClinicaScreen = () => {
+
+  console.log('=------------=');
+
 
   const navigate = useNavigate();
 
   const { id, nombre, apellido } = useSelector(state => state.pacientes.active);
 
+  
   const redirection = () => {
     if (!id) {
       navigate('/dashboard');
@@ -47,7 +51,6 @@ export const HistoriaClinicaScreen = () => {
 
   const urlPost = `http://${ip}:8080/api/historia`;
 
-  const urlGet = `http://${ip}:8080/api/historiaspdf/${id}`;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -64,12 +67,6 @@ export const HistoriaClinicaScreen = () => {
   }
   const token = sessionStorage.getItem('access_token');
 
-  const handleGetHistoria = async (e) => {
-    e.preventDefault();
-
-    const respuestaPdf = await fetchConTokenBlob(urlGet, null);
-    
-  }
   return (
 
     <React.Fragment>
@@ -128,17 +125,6 @@ export const HistoriaClinicaScreen = () => {
 
           </Grid>
         </Box>
-
-        <Grid item xs={12}>
-          <Button
-            color='warning'
-            fullWidth
-            onClick={(e) => handleGetHistoria(e)}
-            sx={{ bgcolor: 'success.light', fontSize: 14 }}
-          >
-            Descargar historia
-          </Button>
-        </Grid>
 
       </Container>
     </React.Fragment>

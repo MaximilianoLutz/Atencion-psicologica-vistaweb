@@ -9,7 +9,8 @@ import { IngresarPaciente } from '../screens/paciente/IngresarPaciente';
 import { PacienteMainScreen } from '../screens/paciente/Main/PacienteMainScreen';
 import { DatosFiliatoriosScreen } from '../screens/paciente/DatosFiliatoriosScreen';
 import { DatosDeContactoScreen } from '../screens/paciente/DatosDeContactoScreen';
-import { HistoriaClinicaScreen } from '../screens/paciente/HistoriaClinicaScreen';
+import { HistoriaClinicaScreen } from '../screens/paciente/HistoriaClinica/HistoriaClinicaScreen';
+import { RedactarHistoriaClinicaScreen } from '../screens/paciente/HistoriaClinica/RedactarHistoriaClinicaScreen';
 
 
 export const ProfesionalRouter = () => {
@@ -32,7 +33,7 @@ export const ProfesionalRouter = () => {
                 <Route exact path="/datosFiliatoriosScreen" element={<DatosFiliatoriosScreen />} />
                 <Route exact path="/datosDeContactoScreen" element={<DatosDeContactoScreen />} />
                 <Route exact path="/historiaClinicaScreen" element={<HistoriaClinicaScreen />} />
-
+                <Route exact path="/redactarHistoriaClinicaScreen" element={<RedactarHistoriaClinicaScreen />} />
 
                 <Route path="/" element={< Navigate to="/inicio" />} />
 
