@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -7,7 +8,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { TablePaciente } from './TablePaciente';
+
+import { ItemsTablaTareas } from './ItemsTablaTareas';
 
 
 export const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -32,7 +34,7 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 
-export default function CustomizedTables({ subjects }) {
+export default function TablaTareas({ subjects }) {
 
  
   return (
@@ -40,16 +42,15 @@ export default function CustomizedTables({ subjects }) {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead >
           <TableRow sx={{ backgroundColor: 'warning.main' }}>
-            <StyledTableCell>Nombre</StyledTableCell>
-            <StyledTableCell align="right">Apellido</StyledTableCell>
-            <StyledTableCell align="right">DNI</StyledTableCell>
-            <StyledTableCell align="right">Detalle</StyledTableCell>
-            <StyledTableCell align="right">Historia Clinica</StyledTableCell>
+          <StyledTableCell>Fecha Limite</StyledTableCell>
+            <StyledTableCell>Importancia</StyledTableCell>
+            <StyledTableCell align="center">Tarea</StyledTableCell>
+            <StyledTableCell align="center">Borrar</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {subjects?.map((subject) => (
-            <TablePaciente paciente={subject} key={subject.id} />
+            <ItemsTablaTareas tarea={subject} key={subject.id} />
           ))}
         </TableBody>
       </Table>

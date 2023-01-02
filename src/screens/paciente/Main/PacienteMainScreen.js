@@ -286,19 +286,14 @@ console.log(detallePaciente);
 
 
             <Grid container spacing={2}>
+
               {/* Aqui tareas pendientes */}
 
               <Grid item xs>
                 <Card>
                   <CardContent>
 
-                    <Typography color={'primary.main'}>EstadoCivil: </Typography>
-                    <Typography>Estudios:  </Typography>
-                    <Typography color={'primary.main'}>Nacionalidad: </Typography>
-                    <Typography color={'primary.main'}>Derivacion: </Typography>
-                    <Typography color={'primary.main'}>Genero:</Typography>
-                    <Typography color={'primary.main'}>FechaAdmision: </Typography>
-                    <Typography color={'primary.main'}>FechaNacimiento: </Typography>
+                   
 
                   </CardContent>
 
@@ -307,7 +302,7 @@ console.log(detallePaciente);
                       size="small"
                       onClick={() => (console.log('editar'))}
                     >
-                      Editar Datos Filiatorios
+                      Agregar nueva tarea
                     </Button>
                   </CardActions>
                 </Card>

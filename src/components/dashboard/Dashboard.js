@@ -27,8 +27,7 @@ import { mainListItems, secondaryListItems } from './listItems';
 // import Chart from './Chart';
 import Deposits from './Deposits';
 
-
-import CustomizedTables from '../pacientes/CustomizedTables';
+import TablaPacientes from '../pacientes/TablaPacientes/TablaPacientes';
 import { startLogout } from '../../redux/features/Slices/authSlice';
 import { startLoadingPacientes } from '../../redux/features/Slices/ProfesionalSlice';
 
@@ -234,7 +233,7 @@ function DashboardContent() {
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <CustomizedTables subjects={pacientes} />
+                  <TablaPacientes subjects={pacientes} />
                   {/* <Orders /> */}
                 </Paper>
               </Grid>

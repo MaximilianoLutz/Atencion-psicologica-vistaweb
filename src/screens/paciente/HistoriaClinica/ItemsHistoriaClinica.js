@@ -8,7 +8,7 @@ import { ip } from '../../../ip';
 import { fetchConTokenBlob } from '../../../api/requestApi';
 
 
-export const TableHistoriaCLinica = ({ historia }) => {
+export const ItemsHistoriaClinica = ({ historia }) => {
 
     const dispatch = useDispatch();
     const { active } = useSelector(state => state.pacientes);

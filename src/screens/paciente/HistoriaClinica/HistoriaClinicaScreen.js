@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Button, Grid, Paper } from '@mui/material';
 import { Container } from '@mui/system';
@@ -7,24 +7,30 @@ import { Container } from '@mui/system';
 import { fetchConTokenBlob } from '../../../api/requestApi';
 import { ip } from '../../../ip';
 import CustomizedTablesHistoria from './CustomizedTablesHistoria';
+import TablaTareas from '../../../components/pacientes/TablaTareas/TablaTareas';
+import { gestionarDatosPaciente } from '../../../redux/features/Slices/pacientesSlice';
 
 export const HistoriaClinicaScreen = () => {
 
 
+  const  dispatch = useDispatchh();
   const navigate = useNavigate();
 
   const { id, nombre, apellido } = useSelector(state => state.pacientes.active);
-  const { active } = useSelector(state => state.pacientes);
+  const { tarea } = useSelector(state => state.pacientes);
   const { historia } = useSelector(state => state.pacientes.detallePaciente);
+
+  // const [ tareaLocal, setTareaLocal ] = useState([]);
 
   const handleGetHistoria = async () => {
 
     const urlGet = `http://${ip}:8080/api/historiaspdf/${id}`;
 
     const respuestaPdf = await fetchConTokenBlob(urlGet, null);
-
-
   }
+
+
+
 
   const redirection = () => {
     if (!id) {
@@ -35,6 +41,10 @@ export const HistoriaClinicaScreen = () => {
   useEffect(() => {
     redirection();
   }, [id]);
+
+  useEffect(() => {
+    dispatch( gestionarDatosPaciente(`http://${ip}:8080/api/todo/${id}`, null));
+  }, [id, tarea]);
 
   return (
     <>
@@ -67,9 +77,11 @@ export const HistoriaClinicaScreen = () => {
 
           <Grid item xs={12}>
             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-              <CustomizedTablesHistoria historia={historia} />
+              <TablaHistoriaClinica historia={historia} />
             </Paper>
           </Grid>
+
+          <TablaTareas subjects={tarea} key={tarea.id} />
 
         </Grid>
       </Container>

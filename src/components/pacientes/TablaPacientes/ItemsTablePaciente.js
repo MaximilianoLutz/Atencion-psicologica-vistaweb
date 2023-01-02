@@ -2,12 +2,12 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
-import { StyledTableRow, StyledTableCell } from './CustomizedTables';
+import { StyledTableRow, StyledTableCell } from './TablaPacientes';
 
-import { setPacienteActual, setPacienteNull } from '../../redux/features/Slices/pacientesSlice';
+import { setPacienteActual, setPacienteNull } from '../../../redux/features/Slices/pacientesSlice';
 
 
-export const TablePaciente = ({ paciente }) => {
+export const ItemsTablePaciente = ({ paciente }) => {
     
     const dispatch = useDispatch();
     const navigate = useNavigate();

@@ -5,7 +5,8 @@ import { ip } from '../../../ip';
 
 const initialState = {
   detallePaciente:{},
-  active: { id: null, nombre: '', apellido: '', dni: '', active: false }
+  active: { id: null, nombre: '', apellido: '', dni: '', active: false },
+  tarea: {}
 }
 
 
@@ -51,20 +52,7 @@ export const pacientesSlice = createSlice({
       },
       extraReducers: (builder) => {
         builder
-          .addCase(gestionarDatosPaciente.pending, (state) => {
-
-            console.log('gestionarDatosPaciente');
-          })
-          .addCase(gestionarDatosPaciente.fulfilled, (state, action) => {
-            console.log(action.payload);
-
-            console.log('filfilled');
-
-          }).addCase(gestionarDatosPaciente.rejected, (state) => {
-
-            console.log('rejectedGuardarPaciente');
-
-          }).addCase(StartLoadingPacienteById.pending, (state)=>{
+          .addCase(StartLoadingPacienteById.pending, (state)=>{
 
             console.log('pacientesByIdPending');
           })
@@ -78,7 +66,22 @@ export const pacientesSlice = createSlice({
 
             console.log('rejectedrPacienteById');
             
+          }).addCase(gestionarDatosPaciente.pending, (state) => {
+
+            console.log('gestionarDatosPaciente');
           })
+          .addCase(gestionarDatosPaciente.fulfilled, (state, action) => {
+
+            state.tarea = action.payload;
+            console.log(action.payload);
+
+            console.log('filfilled');
+
+          }).addCase(gestionarDatosPaciente.rejected, (state) => {
+
+            console.log('rejectedGuardarPaciente');
+
+          });
 
   },
 });

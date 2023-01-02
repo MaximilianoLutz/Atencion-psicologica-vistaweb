@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { ItemsHistoriaClinica } from './ItemsHistoriaClinica';
+import { ItemsTablePaciente } from './ItemsTablePaciente';
 
 
 export const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -32,24 +32,24 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 
-export default function CustomizedTablesHistoria({ historia }) {
+export default function TablaPacientes({ subjects }) {
 
-  console.log(historia);
  
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead >
           <TableRow sx={{ backgroundColor: 'warning.main' }}>
-           
-            <StyledTableCell align="right">Fecha</StyledTableCell>
-           
-            <StyledTableCell align="right">Descargar</StyledTableCell>
+            <StyledTableCell>Nombre</StyledTableCell>
+            <StyledTableCell align="right">Apellido</StyledTableCell>
+            <StyledTableCell align="right">DNI</StyledTableCell>
+            <StyledTableCell align="right">Detalle</StyledTableCell>
+            <StyledTableCell align="right">Historia Clinica</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {historia?.map((h) => (
-            <ItemsHistoriaClinica historia={h} key={h.id} />
+          {subjects?.map((subject) => (
+            <ItemsTablePaciente paciente={subject} key={subject.id} />
           ))}
         </TableBody>
       </Table>
