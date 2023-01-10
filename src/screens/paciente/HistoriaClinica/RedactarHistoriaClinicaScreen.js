@@ -21,17 +21,15 @@ import { useForm } from '../../../hooks/useForm';
 
 export const RedactarHistoriaClinicaScreen = () => {
 
-  console.log('=------------=');
-
-
   const navigate = useNavigate();
 
   const { id, nombre, apellido } = useSelector(state => state.pacientes.active);
-
   
+
   const redirection = () => {
     if (!id) {
       navigate('/dashboard');
+      
     }
   }
 
@@ -63,9 +61,8 @@ export const RedactarHistoriaClinicaScreen = () => {
 
     }
     const respuesta = await fetchConTokenMethod(urlPost, obj, 'POST');
-    console.log(respuesta);
+    
   }
-  const token = sessionStorage.getItem('access_token');
 
   return (
 

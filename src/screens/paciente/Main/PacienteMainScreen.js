@@ -91,7 +91,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function DashboardContent() {
+const DashboardContent= ()=> {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -101,8 +101,6 @@ function DashboardContent() {
   const { active } = useSelector(state => state.pacientes);
   const { detallePaciente } = useSelector(state => state.pacientes);
   const { datosFiliatorios, contacto } = detallePaciente;
-
-console.log(detallePaciente);
 
   const redirection = () => {
     if (active.id.lenght < 2) {

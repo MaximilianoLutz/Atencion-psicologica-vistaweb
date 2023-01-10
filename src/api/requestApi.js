@@ -113,6 +113,45 @@ export const fetchConTokenMethod = async (url, data, method = 'GET') => {
 
 }
 
+export const fetchConTokenSlice = async (url, data, method = 'GET') => {
+  const token = sessionStorage.getItem('access_token');
+
+
+  if (method === 'GET') {
+    try {
+
+      const respuesta = await fetch(url, {
+        method: method,
+        headers: {
+          'authorization': 'Bearer ' + token
+        }
+      });
+
+      return respuesta;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  }
+
+  try {
+
+    const respuesta = await fetch(url, {
+      method: method,
+      body: JSON.stringify(data),
+      headers: {
+        'authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      }
+    });
+    return respuesta;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+
+}
+
 
 export const fetchConTokenBlob = async (url, data, method = 'GET') => {
   const token = sessionStorage.getItem('access_token');

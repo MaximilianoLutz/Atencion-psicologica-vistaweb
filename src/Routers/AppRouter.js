@@ -24,9 +24,28 @@ export default function AppRouter() {
   const { checking, uidAuth, profesionalesUser } = useSelector(state => state.auth);
   const { profesional } = useSelector(state => state.profesional);
 
-  useEffect(() => {
+  const checkTokenexpireTime = () => {
 
-    if (localStorage.getItem('access_token')?.length > 0 && !uidAuth) {
+    const dateAux = new Date().getTime() - 3500;
+    const tokenInit = sessionStorage.getItem('token-init-date') || dateAux ;
+
+    console.log(tokenInit);
+
+    const diferencia = (new Date().getTime()) - tokenInit;
+
+    console.log(diferencia);
+
+  }
+
+  useEffect(() => {
+    checkTokenexpireTime()
+  }, [])
+
+
+  useEffect(() => {
+    const access_token = (localStorage.getItem('access_token')) ? localStorage.getItem('access_token') : '';
+
+    if ( access_token.length > 0 && !uidAuth) {
 
       dispatch(startChecking())
     }

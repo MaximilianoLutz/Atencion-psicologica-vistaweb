@@ -34,7 +34,6 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function CustomizedTablesHistoria({ historia }) {
 
-  console.log(historia);
  
   return (
     <TableContainer component={Paper}>

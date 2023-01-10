@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
@@ -10,6 +10,11 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 import { ItemsTablaTareas } from './ItemsTablaTareas';
+import { ip } from '../../../ip';
+import { setTareas, startLoadingTareas } from '../../../redux/features/Slices/pacientesSlice';
+import { fetchConTokenMethod } from '../../../api/requestApi';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 
 export const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -18,7 +23,7 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
+    fontSize: 12,
   },
 }));
 
@@ -34,17 +39,31 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 
-export default function TablaTareas({ subjects }) {
+export const TablaTareas = ({ subjects = [] }) => {
 
- 
+  const dispatch = useDispatch();
+
+  const { id } = useSelector(state => state.pacientes.active);
+
+  const sub = useRef(subjects);
+
+  useEffect(() => {
+    handleGetTareas();
+
+  }, [sub.current]);
+
+  const handleGetTareas = () => {
+    dispatch(startLoadingTareas(id));
+  }
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead >
           <TableRow sx={{ backgroundColor: 'warning.main' }}>
-          <StyledTableCell>Fecha Limite</StyledTableCell>
+            <StyledTableCell>Fecha Limite</StyledTableCell>
             <StyledTableCell>Importancia</StyledTableCell>
-            <StyledTableCell align="center">Tarea</StyledTableCell>
+            <StyledTableCell align="center" aria-controls=''>Tarea</StyledTableCell>
             <StyledTableCell align="center">Borrar</StyledTableCell>
           </TableRow>
         </TableHead>

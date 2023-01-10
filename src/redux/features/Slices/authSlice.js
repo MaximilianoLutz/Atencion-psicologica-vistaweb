@@ -14,13 +14,19 @@ const initialState = {
 
 export const startLogin = createAsyncThunk(
   'auth/startLogin',
-  async (data) => {
+  async (data, thunkAPI) => {
 
     const { email, password } = data;
     const response = await fetchToken(email, password);
-    // const { access_token, Name, Uid: uidAuth } = await response.json();
+    console.log(response);
+    if (response.status > 299 ) {
+      console.log(response.access_token);
+      thunkAPI.dispatch(logout());
+    } else {
+      return response.json();
 
-    return response.json();
+    }
+
   }
 );
 
@@ -109,7 +115,7 @@ export const authSlice = createSlice({
         sessionStorage.removeItem('token-init-date');
       })
       .addCase(startChecking.pending, (state) => {
-      
+
       })
       .addCase(startChecking.fulfilled, (state, action) => {
         const token = sessionStorage.getItem('access_token');

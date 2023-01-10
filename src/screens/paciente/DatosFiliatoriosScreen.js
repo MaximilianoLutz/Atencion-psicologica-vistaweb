@@ -42,17 +42,6 @@ export const DatosFiliatoriosScreen = () => {
       ocupacion: ""
     };
 
-  // const datos = {
-  //   derivacion: datosPrevios.derivacion,
-  //   estadoCivil: datosPrevios.estadoCivil,
-  //   estudios: datosPrevios.estudios,
-  //   fechaAdmision: datosPrevios.fechaAdmision,
-  //   fechaNacimiento: datosPrevios.fechaNacimiento,
-  //   genero: datosPrevios.genero,
-  //   nacionalidad: datosPrevios.nacionalidad,
-  //   ocupacion: datosPrevios.ocupacion,
-  // }
-
   if (!!pacienteActivo.contacto) {
     console.log('tiene');
     var { id, ...res } = pacienteActivo.contacto;
@@ -196,13 +185,22 @@ export const DatosFiliatoriosScreen = () => {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <Input
-              type="date"
-              name='fechaNacimiento'
-              className="form-control"
-              value={fechaNacimiento}
-              onChange={handleInputChange}
-            />
+
+            <FormControl
+              fullWidth
+              margin={'normal'}
+            >
+              <InputLabel htmlFor="nacimiento">Fecha de Nacimiento</InputLabel>
+              <Input
+                id="nacimiento"
+                type="date"
+                name='fechaNacimiento'
+                className="form-control"
+                value={fechaNacimiento}
+                onChange={handleInputChange}
+              />
+
+            </FormControl>
           </Grid>
 
           <Grid item xs={12} sm={6}>
@@ -257,7 +255,7 @@ export const DatosFiliatoriosScreen = () => {
           <Grid item xs={12} sm={6}>
 
             <FormControl
-              fullWidth ={true}
+              fullWidth={true}
               margin={'normal'}
             >
               <InputLabel htmlFor="derivacion" >Derivacion</InputLabel>
