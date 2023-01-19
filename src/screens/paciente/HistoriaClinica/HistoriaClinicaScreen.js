@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, Grid, Paper } from '@mui/material';
 import { Container } from '@mui/system';
 
@@ -95,6 +95,7 @@ export const HistoriaClinicaScreen = () => {
             <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', maxHeight: '240px' }}>
               <TablaTareas subjects={tareas} key={tareas.id} />
             </Paper>
+          
           </Grid>
 
 

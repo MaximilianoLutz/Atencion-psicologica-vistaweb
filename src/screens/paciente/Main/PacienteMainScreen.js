@@ -28,6 +28,7 @@ import { mainListItems, secondaryListItems } from './listItems';
 
 import { startLogout } from '../../../redux/features/Slices/authSlice';
 import { StartLoadingPacienteById } from '../../../redux/features/Slices/pacientesSlice';
+import { CalendarScreen } from '../../calendar/CalendarScreen';
 
 
 function Copyright(props) {
@@ -91,7 +92,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-const DashboardContent= ()=> {
+const DashboardContent = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -291,7 +292,7 @@ const DashboardContent= ()=> {
                 <Card>
                   <CardContent>
 
-                   
+
 
                   </CardContent>
 
@@ -310,6 +311,16 @@ const DashboardContent= ()=> {
               {/* Fechas importantes */}
               <Grid item xs>
                 <Card>
+
+                  <CardActions>
+                    <Button
+                      size="small"
+                      onClick={() => navigate('/calendarScreen')}
+                    > 
+                    Agregar nueva fecha
+
+                      </Button>
+                  </CardActions>
 
                 </Card>
               </Grid>

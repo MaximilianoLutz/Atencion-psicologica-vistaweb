@@ -11,6 +11,7 @@ import { DatosFiliatoriosScreen } from '../screens/paciente/DatosFiliatoriosScre
 import { DatosDeContactoScreen } from '../screens/paciente/DatosDeContactoScreen';
 import { HistoriaClinicaScreen } from '../screens/paciente/HistoriaClinica/HistoriaClinicaScreen';
 import { RedactarHistoriaClinicaScreen } from '../screens/paciente/HistoriaClinica/RedactarHistoriaClinicaScreen';
+import { CalendarScreen } from '../screens/calendar/CalendarScreen';
 
 
 export const ProfesionalRouter = () => {
@@ -34,6 +35,8 @@ export const ProfesionalRouter = () => {
                 <Route exact path="/datosDeContactoScreen" element={<DatosDeContactoScreen />} />
                 <Route exact path="/historiaClinicaScreen" element={<HistoriaClinicaScreen />} />
                 <Route exact path="/redactarHistoriaClinicaScreen" element={<RedactarHistoriaClinicaScreen />} />
+                <Route exact path="/calendarScreen" element={<CalendarScreen />} />
+
 
                 <Route path="/" element={< Navigate to="/inicio" />} />
 

@@ -88,6 +88,7 @@ export const ModalAgregarTarea = () => {
                                     label="Tarea"
                                     fullWidth={true}
                                     variant="standard"
+                                    autoComplete="none"
 
                                 />
                             </FormControl>
@@ -99,9 +100,9 @@ export const ModalAgregarTarea = () => {
                                 fullWidth
                                 margin={'normal'}
                             >
-                                <InputLabel htmlFor="nacimiento">Fecha de Nacimiento</InputLabel>
+                                <InputLabel htmlFor="fechaLimite">Fecha Limite</InputLabel>
                                 <Input
-                                    id="nacimiento"
+                                    id="fechaLimite"
                                     type="date"
                                     name='fechaLimite'
                                     className="form-control"
@@ -124,9 +125,9 @@ export const ModalAgregarTarea = () => {
                                     value={jerarquia}
                                     onChange={handleInputChange}
                                 >
-                                    <MenuItem value={0}>Baja</MenuItem>
+                                    <MenuItem value={2}>Baja</MenuItem>
                                     <MenuItem value={1}>Media</MenuItem>
-                                    <MenuItem value={2}>alta</MenuItem>
+                                    <MenuItem value={0}>alta</MenuItem>
                                 </Select>
                             </FormControl>
                         </Grid>

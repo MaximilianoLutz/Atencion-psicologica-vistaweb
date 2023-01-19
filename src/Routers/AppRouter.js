@@ -12,8 +12,7 @@ import { ProfesionalRouter } from "./ProfesionalRouter";
 import { PrivateRoutes } from "./PrivateRoutes";
 import { PublicRoutes } from "./PublicRoutes";
 import SignUp from "../screens/auth/SingUp";
-import '../styles/spinner.css'
-import { setProfesionalActive } from "../redux/features/Slices/ProfesionalSlice";
+import '../styles/spinner.css';
 
 
 

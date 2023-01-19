@@ -281,7 +281,7 @@ export const DatosFiliatoriosScreen = () => {
               fullWidth={true}
               margin={'normal'}
             >
-              <InputLabel htmlFor="ocupacion" >Ocupacon</InputLabel>
+              <InputLabel htmlFor="ocupacion" >Ocupacion</InputLabel>
               <Input
                 id="ocupacion"
                 aria-describedby="my-helper-text"

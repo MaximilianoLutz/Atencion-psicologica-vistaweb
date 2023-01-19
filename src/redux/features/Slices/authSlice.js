@@ -18,7 +18,7 @@ export const startLogin = createAsyncThunk(
 
     const { email, password } = data;
     const response = await fetchToken(email, password);
-    console.log(response);
+
     if (response.status > 299 ) {
       console.log(response.access_token);
       thunkAPI.dispatch(logout());
@@ -26,7 +26,6 @@ export const startLogin = createAsyncThunk(
       return response.json();
 
     }
-
   }
 );
 
