@@ -6,9 +6,10 @@ import swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearActiveNote, startAddNewEvent, startLoadingEvents, uiCloseModal } from '../../redux/features/Slices/calendarSlice';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import { Box, FormControl, Grid, Input, InputLabel, Modal, TextField, Typography } from '@mui/material';
+import { Box, Button, Divider, FormControl, Grid, Input, InputLabel, MenuItem, Modal, Select, TextField, Typography } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import SaveIcon from '@mui/icons-material/Save';
 
 
 
@@ -49,6 +50,8 @@ export const CalendarModal = () => {
   const [titleValid, setTitleValid] = useState(true);
 
   const [formValues, setFormValues] = useState(initEvent);
+  // const [duracion, setDuracion] = useState(20);
+
 
   const { title, notes, start, end } = formValues;
 
@@ -83,7 +86,7 @@ export const CalendarModal = () => {
 
 
   const handleStartDateChange = (e) => {
-    console.log(e);
+  
     setStartDate(e);
     setFormValues({
       ...formValues,
@@ -93,13 +96,16 @@ export const CalendarModal = () => {
   }
 
   const handleEndDateChange = (e) => {
-    console.log(e);
+    // console.log(e);
+    // setDuracion(e);
+    
+    // const defineEndTime = moment(start).add(duracion, 'minute');
     setEndDate(e);
     setFormValues({
       ...formValues,
       end: e
     })
-
+    console.log(formValues);
   }
 
   const closeModal = () => {
@@ -108,6 +114,7 @@ export const CalendarModal = () => {
     setFormValues(initEvent);
   }
 
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formValues);
@@ -145,124 +152,116 @@ export const CalendarModal = () => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={style}>
-          <Typography sx={{ backgroundColor: 'primary.main', opacity: '0.8', color: 'white', align: 'center' }}>{(activeEvents) ? 'Editar turno' : 'Nuevo turno'} </Typography>
-          <hr />
-          <Grid container spacing={3}>
+      <Box component="form" noValidate onSubmit={handleSubmit} sx={style}>
+        <Typography
+          id="modal-modal-title" variant="h6"
+          sx={{
+            backgroundColor: 'primary.main',
+            opacity: '0.8', color: 'white',
+            align: 'center',
+            marginBottom: '10px'
+          }}
+        >
+          {(activeEvents) ? 'Editar turno' : 'Nuevo turno'}
+        </Typography>
 
-            {/* <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <InputLabel id="HoraInicio">Fecha y hora de inicio</InputLabel>
-                <Input
-                  id="HoraInicio"
-                  type="datetime"
-                  className="form-control"
+          <Divider variant='fullWidth' color='black' />
+
+        <Grid id="modal-modal-description" container spacing={3} marginTop={'10px'}>
+
+          {/* init Date  */}
+          <Grid item>
+            <FormControl fullWidth>
+              <LocalizationProvider dateAdapter={AdapterMoment}>
+                <DateTimePicker
+                  label="Fecha y hora de Inicio"
+                  renderInput={(params) => <TextField {...params} />}
                   value={startDate}
                   onChange={handleStartDateChange}
-                  fullWidth={false}
                 />
-              </FormControl>
-            </Grid>
+              </LocalizationProvider>
+            </FormControl>
+          </Grid>
 
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <InputLabel id="HoraFin">Fecha y hora de finalizacion</InputLabel>
-                <Input
-                  id="HoraFin"
-                  type="datetime"
-                  className="form-control"
+          {/* <Grid item xs={12} sm={6}>
+            <FormControl fullWidth>
+              <InputLabel id="Duracion">Duracion</InputLabel>
+              <Select
+                labelId="Duracion"
+                label="Duracion"
+                value={duracion}
+                onChange={handleEndDateChange}
+                defaultValue={60}
+              >
+                <MenuItem value={20}>20 minutos</MenuItem>
+                <MenuItem value={30}>30 minutos</MenuItem>
+                <MenuItem value={45}>45 minutos</MenuItem>
+                <MenuItem value={60}>60 minutos</MenuItem>
+              
+              </Select>
+            </FormControl>
+          </Grid> */}
+
+  
+          <Grid item>
+            <FormControl fullWidth>
+              <LocalizationProvider dateAdapter={AdapterMoment}>
+                <DateTimePicker
+                  label="Fecha y hora de finalizacion"
+                  renderInput={(params) => <TextField {...params} />}
                   value={endDate}
                   onChange={handleEndDateChange}
-                  fullWidth={false}
                 />
-              </FormControl>
-            </Grid> */}
+              </LocalizationProvider>
+            </FormControl>
 
 
-            {/* init Date  */}
-            <Grid item>
-              <FormControl fullWidth>
-                <LocalizationProvider dateAdapter={AdapterMoment}>
-                  <DateTimePicker
-                    label="Fecha y hora de Inicio"
-                    renderInput={(params) => <TextField {...params} />}
-                    value={startDate}
-                    onChange={handleStartDateChange}
-                  />
-                </LocalizationProvider>
-              </FormControl>
-            </Grid>
-            
-            {/* end Date  */}
-            <Grid item>
-              <FormControl fullWidth>
-                <LocalizationProvider dateAdapter={AdapterMoment}>
-                  <DateTimePicker
-                    label="Fecha y hora de finalizacion"
-                    renderInput={(params) => <TextField {...params} />}
-                    value={endDate}
-                    onChange={handleEndDateChange}
-                  />
-                </LocalizationProvider>
-              </FormControl>
+          </Grid> 
 
-
-            </Grid>
-
-            <hr />
-            <Grid item >
-              <FormControl fullWidth>
-                <InputLabel id="titulo">Paciente</InputLabel>
-                <Input
-                  id="titulo"
-                  type="text"
-                  placeholder="Título del evento"
-                  name="title"
-                  value={title}
-                  onChange={handleInputChange}
-                  fullWidth={true}
-                />
-              </FormControl>
-            </Grid>
-            {/* <div className="form-group">
-              <label></label>
-              <input
+          <Grid item  xs={12}>
+            <FormControl fullWidth>
+              <InputLabel id="titulo">Paciente</InputLabel>
+              <Input
+                id="titulo"
                 type="text"
-                className={`form-control ${!titleValid && 'is-invalid'} `}
-                placeholder="Título del evento"
+                placeholder="Nombre de Paciente a citar"
                 name="title"
                 value={title}
                 onChange={handleInputChange}
-                autoComplete="off"
+                fullWidth={true}
               />
-              <small id="emailHelp" className="form-text text-muted">Una descripción corta</small>
-            </div> */}
+            </FormControl>
+          </Grid>
 
-            <div className="form-group">
-              <textarea
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <TextField
                 type="text"
-                className="form-control"
                 placeholder="Notas"
                 rows="5"
                 name="notes"
                 value={notes}
                 onChange={handleInputChange}
-              ></textarea>
-              <small id="emailHelp" className="form-text text-muted">Información adicional</small>
-            </div>
-
-            <button
-              type="submit"
-              className="btn btn-outline-primary w-100"
-            >
-              <i className="fas fa-save"></i>
-              <span> Guardar</span>
-            </button>
-
+              ></TextField>
+              <Typography>Información adicional</Typography>
+            </FormControl>
           </Grid>
-        </Box>
-      </>
+
+          <Grid item >
+            <FormControl fullWidth>
+              <Button
+                type="submit"
+                color="primary"
+                variant="contained"
+              >
+                  <SaveIcon color='black' fontSize='medium' />
+                   Guardar
+              </Button>
+            </FormControl>
+          </Grid>
+
+        </Grid>
+      </Box>
     </Modal>
   )
 }

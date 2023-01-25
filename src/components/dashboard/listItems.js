@@ -17,7 +17,7 @@ import "../../styles/stylesDash.css";
 export const mainListItems = (
 
   <React.Fragment>
-    <LinkRouter to="/calendario" className="estiloBotonDash">
+    <LinkRouter to="/calendarScreen" className="estiloBotonDash">
       <ListItemButton>
         <ListItemIcon>
           <CalendarTodayIcon />

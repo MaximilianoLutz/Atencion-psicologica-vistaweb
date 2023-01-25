@@ -36,6 +36,7 @@ export const CalendarScreen = () => {
 
   }, [dispatch])
 
+
   const onDoubleClickEvent = (e) => {
     dispatch(uiOpenModal());
 

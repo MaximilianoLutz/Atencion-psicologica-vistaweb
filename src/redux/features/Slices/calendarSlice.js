@@ -54,7 +54,7 @@ export const startAddNewEvent = createAsyncThunk(
 
 export const startDeleteEvent = createAsyncThunk(
     'calendar/startDeleteEvent',
-    async (data) => {
+    async (data, thunkAPI) => {
 
         const { eventId, profesionalId } = data;
         try {
@@ -62,6 +62,7 @@ export const startDeleteEvent = createAsyncThunk(
 
             const respuesta = await fetchConTokenMethod(url, eventId, 'Delete');
 
+            thunkAPI.dispatch(eventsLoaded(respuesta));
             return respuesta;
 
         } catch (error) {
@@ -131,7 +132,7 @@ export const calendarSlice = createSlice({
             .addCase(startDeleteEvent.fulfilled, (state, action) => {
             
 
-                console.log('fulfilledLoadingNewEvent');
+                console.log('fulfilleddeletevent');
 
 
             }).addCase(startDeleteEvent.rejected, (state) => {

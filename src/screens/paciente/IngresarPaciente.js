@@ -137,10 +137,7 @@ export const IngresarPaciente = () => {
         </Grid>
 
       </Container>
-
-
-
-
+      
     </React.Fragment>
 
   )

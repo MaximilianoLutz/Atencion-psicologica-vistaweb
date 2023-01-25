@@ -24,12 +24,13 @@ import { ListItemText } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 import { mainListItems, secondaryListItems } from './listItems';
-// import Chart from './Chart';
 import Deposits from './Deposits';
 
 import TablaPacientes from '../pacientes/TablaPacientes/TablaPacientes';
 import { startLogout } from '../../redux/features/Slices/authSlice';
 import { startLoadingPacientes } from '../../redux/features/Slices/ProfesionalSlice';
+import { CitasDelDia } from '../calendar/CitasDelDia';
+import { startLoadingEvents } from '../../redux/features/Slices/calendarSlice';
 
 
 function Copyright(props) {
@@ -37,7 +38,7 @@ function Copyright(props) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-      Atención psicológica App
+        Atención psicológica App
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -113,7 +114,13 @@ function DashboardContent() {
   React.useEffect(() => {
     redirection();
     dispatch(startLoadingPacientes(profesional.idHex));
-  }, [profesional])
+  }, [profesional]);
+
+  React.useEffect(() => {
+    dispatch(startLoadingEvents(profesional.idHex));
+  }, [profesional]);
+
+
 
   const handleLogout = () => {
     dispatch(startLogout());
@@ -204,7 +211,8 @@ function DashboardContent() {
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-              {/* Chart */}
+
+              {/* Citas del dia */}
               <Grid item xs={12} md={8} lg={9}>
                 <Paper
                   sx={{
@@ -214,9 +222,10 @@ function DashboardContent() {
                     height: 240,
                   }}
                 >
-                  <Deposits />
+                  <CitasDelDia />
                 </Paper>
               </Grid>
+
               {/* Recent Deposits */}
               <Grid item xs={12} md={4} lg={3}>
                 <Paper
@@ -230,13 +239,17 @@ function DashboardContent() {
                   <Deposits />
                 </Paper>
               </Grid>
-              {/* Recent Orders */}
+
+              {/* Pacientes activos */}
               <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                <Paper
+                  sx={{
+                    p: 2, display: 'flex', flexDirection: 'column'
+                  }}>
                   <TablaPacientes subjects={pacientes} />
-                  {/* <Orders /> */}
                 </Paper>
               </Grid>
+              
             </Grid>
             <Copyright sx={{ pt: 4 }} />
           </Container>
