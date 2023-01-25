@@ -1,31 +1,40 @@
+import { Button } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { startDeleteEvent } from '../redux/features/Slices/calendarSlice';
+import { clearActiveNote, startDeleteEvent, startLoadingEvents } from '../redux/features/Slices/calendarSlice';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 export const DeleteCalendarEventFab = () => {
 
   const dispatch = useDispatch();
 
-  const { activeEvents } = useSelector( state => state.calendar ); 
-  const { idHex } = useSelector( state => state.profesional.profesional);
-  
+  const { activeEvents } = useSelector(state => state.calendar);
+  const { idHex } = useSelector(state => state.profesional.profesional);
+
   const data = {
-    eventId: activeEvents.id, 
+    eventId: activeEvents.id,
     profesionalId: idHex
   }
 
   const handleDelete = () => {
-    dispatch( startDeleteEvent(data));
+    dispatch(startDeleteEvent(data));
+    dispatch(clearActiveNote());
+    dispatch(startLoadingEvents(idHex));
   }
 
   return (
-    <button
-      className='btn btn-danger fab-danger'
+    <Button
+      startIcon={<DeleteForeverIcon />}
+      color="error"
+      variant="contained"
+      sx={{
+        bottom: '30px',
+        left: '30px',
+        position: 'fixed'
+      }}
       onClick={handleDelete}
     >
-      <i className='fas fa-trash'></i>
-      <span> Borrar eventos</span>
-
-    </button>
+      Borrar eventos
+    </Button>
   )
 }

@@ -1,26 +1,17 @@
 import React, { useEffect, useState } from 'react';
 
 import moment from 'moment';
-import Modal from 'react-modal';
-import DateTimePicker from 'react-datetime-picker';
 import swal from 'sweetalert2';
 //import { isValid } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearActiveNote, startAddNewEvent, startLoadingEvents, uiCloseModal } from '../../redux/features/Slices/calendarSlice';
-//import { calendarEventAddNew, calendarEventUpdated, clearActiveNote, eventStartLoading, startAddNewEvent } from '../../action/calendar/calendarEvents';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { Box, FormControl, Grid, Input, InputLabel, Modal, TextField, Typography } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-};
 
-Modal.setAppElement('#root');
+
 
 const nowCustom = moment().minutes(0).seconds(0).add(1, 'hours'); // para q ponga fecha redonda y se pone afuera del componente pa q no se tenga q calcular todo el tiempo
 const nowPlus1 = nowCustom.clone().add(1, 'hours');
@@ -32,6 +23,18 @@ const initEvent = { // fuera del componente para que no se este generando cada v
   notes: '',
 }
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 600,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 export const CalendarModal = () => {
 
   const { activeEvents, modalOpen } = useSelector(state => state.calendar);
@@ -41,8 +44,8 @@ export const CalendarModal = () => {
   const dispatch = useDispatch();
 
   //datepicker
-  const [startDate, setStartDate] = useState(new Date(nowCustom));
-  const [endDate, setEndDate] = useState(new Date(nowPlus1));
+  const [startDate, setStartDate] = useState(nowCustom.toDate());
+  const [endDate, setEndDate] = useState(nowPlus1.toDate());
   const [titleValid, setTitleValid] = useState(true);
 
   const [formValues, setFormValues] = useState(initEvent);
@@ -51,11 +54,16 @@ export const CalendarModal = () => {
 
   useEffect(() => {
     if (activeEvents) {
-      setStartDate(activeEvents.start);
-      setEndDate(activeEvents.end);
+
+      // const inicio = moment(activeEvents.start).format('YYYY-MM-DDThh:mm');
+      // const fin = moment(activeEvents.end).format('YYYY-MM-DDThh:mm');
+      // setStartDate(inicio);
+      // setEndDate(fin);
       setFormValues(activeEvents);
     } else {
       const eventoDefinitivo = {
+        // start: moment(start).format('YYYY-MM-DDThh:mm'),
+        // end: moment(end).format('YYYY-MM-DDThh:mm'),
         ...initEvent,
         idProfesional: idHex,
         idPaciente: id
@@ -116,9 +124,6 @@ export const CalendarModal = () => {
     if (title.trim().length < 2) return setTitleValid(false);
 
     if (activeEvents) {
-
-
-
       dispatch(startAddNewEvent({ id: activeEvents.id, ...formValues }))
     } else {
       dispatch(startAddNewEvent({
@@ -135,77 +140,129 @@ export const CalendarModal = () => {
   return (
 
     <Modal
-      isOpen={modalOpen}
-      // onAfterOpen={afterOpenModal}
-      onRequestClose={closeModal}
-      closeTimeoutMS={200}
-      style={customStyles}
-      className={"modal"}
-      overlayClassName="modal-fondo"
+      open={modalOpen}
+      onClose={closeModal}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
     >
-      <h1>{(activeEvents) ? 'Editar Evento' : 'Nuevo evento'} </h1>
-      <hr />
-      <form
-        className="container"
-        onSubmit={handleSubmit}
-      >
+      <>
+        <Box component="form" noValidate onSubmit={handleSubmit} sx={style}>
+          <Typography sx={{ backgroundColor: 'primary.main', opacity: '0.8', color: 'white', align: 'center' }}>{(activeEvents) ? 'Editar turno' : 'Nuevo turno'} </Typography>
+          <hr />
+          <Grid container spacing={3}>
 
-        <div className="form-group">
-          <label>Fecha y hora inicio</label>
-          <DateTimePicker
-            onChange={handleStartDateChange}
-            value={startDate}
-            className="form-control"
-          />
-        </div>
+            {/* <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel id="HoraInicio">Fecha y hora de inicio</InputLabel>
+                <Input
+                  id="HoraInicio"
+                  type="datetime"
+                  className="form-control"
+                  value={startDate}
+                  onChange={handleStartDateChange}
+                  fullWidth={false}
+                />
+              </FormControl>
+            </Grid>
 
-        <div className="form-group">
-          <label>Fecha y hora fin</label>
-          <DateTimePicker
-            onChange={handleEndDateChange}
-            value={endDate}
-            minDate={startDate}
-            className="form-control"
-          />
-        </div>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel id="HoraFin">Fecha y hora de finalizacion</InputLabel>
+                <Input
+                  id="HoraFin"
+                  type="datetime"
+                  className="form-control"
+                  value={endDate}
+                  onChange={handleEndDateChange}
+                  fullWidth={false}
+                />
+              </FormControl>
+            </Grid> */}
 
-        <hr />
-        <div className="form-group">
-          <label>Titulo y notas</label>
-          <input
-            type="text"
-            className={`form-control ${!titleValid && 'is-invalid'} `}
-            placeholder="Título del evento"
-            name="title"
-            value={title}
-            onChange={handleInputChange}
-            autoComplete="off"
-          />
-          <small id="emailHelp" className="form-text text-muted">Una descripción corta</small>
-        </div>
 
-        <div className="form-group">
-          <textarea
-            type="text"
-            className="form-control"
-            placeholder="Notas"
-            rows="5"
-            name="notes"
-            value={notes}
-            onChange={handleInputChange}
-          ></textarea>
-          <small id="emailHelp" className="form-text text-muted">Información adicional</small>
-        </div>
+            {/* init Date  */}
+            <Grid item>
+              <FormControl fullWidth>
+                <LocalizationProvider dateAdapter={AdapterMoment}>
+                  <DateTimePicker
+                    label="Fecha y hora de Inicio"
+                    renderInput={(params) => <TextField {...params} />}
+                    value={startDate}
+                    onChange={handleStartDateChange}
+                  />
+                </LocalizationProvider>
+              </FormControl>
+            </Grid>
+            
+            {/* end Date  */}
+            <Grid item>
+              <FormControl fullWidth>
+                <LocalizationProvider dateAdapter={AdapterMoment}>
+                  <DateTimePicker
+                    label="Fecha y hora de finalizacion"
+                    renderInput={(params) => <TextField {...params} />}
+                    value={endDate}
+                    onChange={handleEndDateChange}
+                  />
+                </LocalizationProvider>
+              </FormControl>
 
-        <button
-          type="submit"
-          className="btn btn-outline-primary w-100"
-        >
-          <i className="fas fa-save"></i>
-          <span> Guardar</span>
-        </button>
 
-      </form>
+            </Grid>
+
+            <hr />
+            <Grid item >
+              <FormControl fullWidth>
+                <InputLabel id="titulo">Paciente</InputLabel>
+                <Input
+                  id="titulo"
+                  type="text"
+                  placeholder="Título del evento"
+                  name="title"
+                  value={title}
+                  onChange={handleInputChange}
+                  fullWidth={true}
+                />
+              </FormControl>
+            </Grid>
+            {/* <div className="form-group">
+              <label></label>
+              <input
+                type="text"
+                className={`form-control ${!titleValid && 'is-invalid'} `}
+                placeholder="Título del evento"
+                name="title"
+                value={title}
+                onChange={handleInputChange}
+                autoComplete="off"
+              />
+              <small id="emailHelp" className="form-text text-muted">Una descripción corta</small>
+            </div> */}
+
+            <div className="form-group">
+              <textarea
+                type="text"
+                className="form-control"
+                placeholder="Notas"
+                rows="5"
+                name="notes"
+                value={notes}
+                onChange={handleInputChange}
+              ></textarea>
+              <small id="emailHelp" className="form-text text-muted">Información adicional</small>
+            </div>
+
+            <button
+              type="submit"
+              className="btn btn-outline-primary w-100"
+            >
+              <i className="fas fa-save"></i>
+              <span> Guardar</span>
+            </button>
+
+          </Grid>
+        </Box>
+      </>
     </Modal>
   )
 }

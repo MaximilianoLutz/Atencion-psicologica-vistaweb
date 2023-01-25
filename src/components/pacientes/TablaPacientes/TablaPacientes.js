@@ -37,7 +37,7 @@ export default function TablaPacientes({ subjects }) {
  
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
+      <Table sx={{ minWidth: 700 }} size="small" aria-label="a dense table">
         <TableHead >
           <TableRow sx={{ backgroundColor: 'warning.main' }}>
             <StyledTableCell>Nombre</StyledTableCell>
