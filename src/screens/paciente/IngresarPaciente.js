@@ -14,6 +14,9 @@ import Container from '@mui/material/Container';
 
 import { ip } from "../../ip";
 import { guardarPaciente } from '../../redux/features/Slices/pacientesSlice';
+import Swal from 'sweetalert2';
+import { ChevronLeft } from '@mui/icons-material';
+import Save from '@mui/icons-material/Save';
 
 
 export const IngresarPaciente = () => {
@@ -42,11 +45,22 @@ export const IngresarPaciente = () => {
     const url = `http://${ip}:8080/api/pacientes`;
 
     const data = await fetchConTokenMethod(url, formValues, 'POST');
-    console.log(data);
+
 
     if (data.id) {
-      // dispatch(guardarPaciente(formValues));
-      alert('Paciente guardado correctamente')
+      Swal.fire({
+        title: 'Paciente guardado correctamente',
+        icon: 'success',
+        showCancelButton: true,
+        confirmButtonText: 'Regresar al inicio',
+        cancelButtonText: 'Aceptar',
+        confirmButtonColor: '#2e7d32',
+        cancelButtonColor: '#1976d2',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          handleReturn()
+        }
+      });
       reset();
     }
   }
@@ -55,7 +69,7 @@ export const IngresarPaciente = () => {
     navigate("/dashboard")
   }
 
-  
+
   return (
 
     <React.Fragment>
@@ -73,6 +87,17 @@ export const IngresarPaciente = () => {
           }}>
           Ingresar Datos de Paciente
         </Typography>
+        <Grid item xs={12} sm={6}>
+          <Button
+            onClick={handleReturn}
+            color="success"
+            variant="contained"
+          // sx={{ color:'primary.dark', bgcolor: 'success.light', fontSize: 14 }}
+          >
+            <ChevronLeft color='white' />
+            Regresar
+          </Button>
+        </Grid>
         <Box component="form" noValidate onSubmit={handleRegister} sx={{ mt: 3, padding: 2, border: '1px solid black' }}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
@@ -112,13 +137,14 @@ export const IngresarPaciente = () => {
                 variant="standard"
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} display={'flex'} justifyContent={'flex-end'}>
               <Button
                 type="submit"
-                color='success'
-                fullWidth
-                sx={{ bgcolor: 'warning.light', fontSize: 14 }}
+                color='primary'
+                variant='contained'
+
               >
+                <Save />
                 Guardar
               </Button>
             </Grid>
@@ -126,18 +152,8 @@ export const IngresarPaciente = () => {
           </Grid>
         </Box>
 
-
-        <Grid item xs={12} sm={6}>
-          <Button
-            onClick={handleReturn}
-            sx={{ color:'primary.dark', bgcolor: 'success.light', fontSize: 14 }}
-          >
-            Regresar
-          </Button>
-        </Grid>
-
       </Container>
-      
+
     </React.Fragment>
 
   )

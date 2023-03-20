@@ -52,12 +52,15 @@ export const mainListItems = (
       <ListItemText primary="Ingresar Paciente" />
     </ListItemButton>
     </LinkRouter>
+
+    <LinkRouter to="/pacientesInactivosScreen" className="estiloBotonDash">
     <ListItemButton>
       <ListItemIcon>
         <LayersIcon />
       </ListItemIcon>
-      <ListItemText primary="Integrations" />
+      <ListItemText primary="Pacientes Inactivos" />
     </ListItemButton>
+    </LinkRouter>
   </React.Fragment >
 );
 

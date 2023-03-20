@@ -8,6 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { ItemsTablePaciente } from './ItemsTablePaciente';
+import { useEffect } from 'react';
 
 
 export const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -32,9 +33,8 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 
-export default function TablaPacientes({ subjects }) {
+export default function TablaPacientes({ pacientes, pacienteAction }) {
 
- 
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} size="small" aria-label="a dense table">
@@ -44,12 +44,12 @@ export default function TablaPacientes({ subjects }) {
             <StyledTableCell align="right">Apellido</StyledTableCell>
             <StyledTableCell align="right">DNI</StyledTableCell>
             <StyledTableCell align="right">Detalle</StyledTableCell>
-            <StyledTableCell align="right">Historia Clinica</StyledTableCell>
+            <StyledTableCell align="right">Eliminar de Pacientes Activos</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {subjects?.map((subject) => (
-            <ItemsTablePaciente paciente={subject} key={subject.id} />
+          {pacientes?.map((paciente) => (
+            <ItemsTablePaciente paciente={paciente} key={paciente.id} action={pacienteAction} />
           ))}
         </TableBody>
       </Table>

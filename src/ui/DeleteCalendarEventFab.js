@@ -19,7 +19,7 @@ export const DeleteCalendarEventFab = () => {
   const handleDelete = () => {
     dispatch(startDeleteEvent(data));
     dispatch(clearActiveNote());
-    dispatch(startLoadingEvents(idHex));
+    // dispatch(startLoadingEvents(idHex));
   }
 
   return (

@@ -62,16 +62,26 @@ export const CalendarScreen = () => {
   const eventStyleGetter = (event, start, end, isSelected) => {
     //console.log( event, start, end, isSelected);
     const styles = {
-      backgroundColor: 'red',
+      backgroundColor: 'black',
       borderRadius: '0px',
       opacity: 0.8,
       display: 'block',
-      color: 'white'
+      color: 'green'
 
     }
 
     return { styles: styles }
   }
+
+  const calendarStyle = () => {
+    return {
+      style: {
+        backgroundColor: 'black', //this works
+        color: 'green' //but why doesn't this work?
+      }
+    }
+}   
+
 
   //styles v 312
   return (
@@ -96,6 +106,8 @@ export const CalendarScreen = () => {
         view={lastView}
         min={new Date(2008, 0, 1, 8, 0)}
         max={new Date(2008, 0, 1, 23, 0)}
+        dayPropGetter={calendarStyle}
+        style={{color: 'blue', backgroundColor: 'grey'}}
         components={{
           event: CalendarEvent
         }}
@@ -105,7 +117,7 @@ export const CalendarScreen = () => {
       {
         (activeEvents) && <DeleteCalendarEventFab />
       }
-
+      
       <CalendarModal />
 
     </div>

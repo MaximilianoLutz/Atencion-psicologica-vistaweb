@@ -11,17 +11,28 @@ export const CitasDelDia = () => {
 
     let citasDelDia;
     const now = moment();
+    let citasSortedByDate;
+    let altura;
 
     if (events) {
 
         citasDelDia = events.filter((e) => (moment(e.start).isSame(now, 'day')));
+
+        if(citasDelDia.length > 1){
+
+             citasSortedByDate = citasDelDia.sort((a,b) => new Date(a.start).getTime() - new Date(b.start).getTime());
+        }
+
+        citasSortedByDate = citasDelDia
+
+        // altura = (citasDelDia.length > 8 ) ? 400 : 200;
     }
 
 
 
     return (
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 200 }} size="small" aria-label="a dense table">
+        <TableContainer  sx={{ minWidth: 200, minHeight: 200 }} component={Paper}>
+            <Table  size="small" aria-label="a dense table">
                 <TableHead >
                     <TableRow sx={{ backgroundColor: 'warning.main' }}>
                         <StyledTableCell>Paciente</StyledTableCell>
@@ -29,7 +40,7 @@ export const CitasDelDia = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {citasDelDia?.map((cita) => (
+                    {citasSortedByDate?.map((cita) => (
                         <StyledTableRow
                         key={cita.id}
                         >

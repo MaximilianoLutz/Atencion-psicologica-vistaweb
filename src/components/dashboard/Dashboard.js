@@ -20,7 +20,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
-import { ListItemText } from '@mui/material';
+import { Button, ListItemText } from '@mui/material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 
 import { mainListItems, secondaryListItems } from './listItems';
@@ -31,6 +31,8 @@ import { startLogout } from '../../redux/features/Slices/authSlice';
 import { startLoadingPacientes } from '../../redux/features/Slices/ProfesionalSlice';
 import { CitasDelDia } from '../calendar/CitasDelDia';
 import { startLoadingEvents } from '../../redux/features/Slices/calendarSlice';
+import moment from 'moment/moment';
+import { BirthdayTable } from '../notificaciones/BirthdayTable';
 
 
 function Copyright(props) {
@@ -111,12 +113,12 @@ function DashboardContent() {
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     redirection();
     dispatch(startLoadingPacientes(profesional.idHex));
   }, [profesional]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(startLoadingEvents(profesional.idHex));
   }, [profesional]);
 
@@ -130,6 +132,26 @@ function DashboardContent() {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const [tableVisibility, setTableVisibility] = useState({
+    pacientes: 'none',
+    citas: 'none',
+    fechas: 'none'
+  });
+
+  // const tableVisibility = useRef({
+  //   pacientes: 'none',
+  //   citas: 'none',
+  //   fechas: 'none'})
+  const [citasView, setCitasView] = useState(false);
+  
+  const citasState = ()=>{
+  setCitasView((state)=>{!state});
+
+  }
+
+  const titleButtonCitas = (citasView) ? "Ver tabla de citas" : "Ocultar tabla de citas";
+  
 
 
   return (
@@ -165,10 +187,7 @@ function DashboardContent() {
             >
               Le damos la bienvenida {profesional.nombre}  {profesional.apellido}
             </Typography>
-            {/* <IconButton color="inherit" onClick={ handleLoadProf }>
-                <PeopleIcon />
-                <ListItemText primary="Prof" />
-            </IconButton> */}
+
             <IconButton color="inherit" onClick={handleLogout}>
               <LogoutIcon />
               <ListItemText primary="Cerrar Sesion" />
@@ -181,12 +200,12 @@ function DashboardContent() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'flex-end',
-              backgroundColor: 'salmon',
+              backgroundColor: 'black',
               px: [1],
             }}
           >
             <IconButton onClick={toggleDrawer}>
-              <ChevronLeftIcon />
+              <ChevronLeftIcon color='error' />
             </IconButton>
           </Toolbar>
           <Divider />
@@ -200,7 +219,7 @@ function DashboardContent() {
           component="main"
           sx={{
             backgroundColor: (theme) =>
-              theme.palette.mode === 'light'
+              theme.palette.mode === 'dark'
                 ? theme.palette.grey[100]
                 : theme.palette.grey[900],
             flexGrow: 1,
@@ -209,17 +228,55 @@ function DashboardContent() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
 
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+
+            <Grid container spacing={3}>
               {/* Citas del dia */}
-              <Grid item xs={12} md={8} lg={9}>
+              <Grid item xs={12} md={8} lg={9} sx={()=>{
+                if(citasView){
+
+                  return {display: 'none'} 
+                }
+                return {display: 'inherit'}
+                }}>
+                <Grid
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    bgcolor: 'success.light'
+
+                  }}
+                >
+
+                  <Typography
+                    component="h3"
+                    variant="h4"
+                    color={"black"}
+                    alignContent='end'
+                    fontWeight={'700'}
+                  >
+                    Citas del Dia {moment().format('DD/MM')}
+                  </Typography>
+
+                  <Button
+                    onClick={citasState}
+                    color='Primary'
+                  >
+                    {
+                      titleButtonCitas
+                    }
+                  </Button>
+
+                </Grid>
+
                 <Paper
                   sx={{
                     p: 2,
                     display: 'flex',
                     flexDirection: 'column',
-                    height: 240,
+                    height: 400,
+                    backgroundColor: 'success.dark'
                   }}
                 >
                   <CitasDelDia />
@@ -234,9 +291,10 @@ function DashboardContent() {
                     display: 'flex',
                     flexDirection: 'column',
                     height: 240,
+                    backgroundColor: 'success.dark'
                   }}
                 >
-                  <Deposits />
+                  <BirthdayTable />
                 </Paper>
               </Grid>
 
@@ -244,12 +302,15 @@ function DashboardContent() {
               <Grid item xs={12}>
                 <Paper
                   sx={{
-                    p: 2, display: 'flex', flexDirection: 'column'
+                    p: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    backgroundColor: 'success.dark'
                   }}>
-                  <TablaPacientes subjects={pacientes} />
+                  <TablaPacientes pacientes={pacientes} pacienteAction={'Desactivar'} />
                 </Paper>
               </Grid>
-              
+
             </Grid>
             <Copyright sx={{ pt: 4 }} />
           </Container>

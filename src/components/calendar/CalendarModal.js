@@ -10,6 +10,8 @@ import { Box, Button, Divider, FormControl, Grid, Input, InputLabel, MenuItem, M
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import SaveIcon from '@mui/icons-material/Save';
+import { SelectActiveModal } from './SelectActiveModal';
+import { setPacienteNull } from '../../redux/features/Slices/pacientesSlice';
 
 
 
@@ -40,42 +42,48 @@ export const CalendarModal = () => {
 
   const { activeEvents, modalOpen } = useSelector(state => state.calendar);
   const { idHex } = useSelector(state => state.profesional.profesional);
-  const { id } = useSelector(state => state.pacientes.active);
+  const { active } = useSelector(state => state.pacientes);
+  const { id, nombre, apellido } = active;
 
   const dispatch = useDispatch();
 
   //datepicker
-  const [startDate, setStartDate] = useState(nowCustom.toDate());
-  const [endDate, setEndDate] = useState(nowPlus1.toDate());
-  const [titleValid, setTitleValid] = useState(true);
+  const [startDate, setStartDate] = useState(nowCustom);
+  const [endDate, setEndDate] = useState(nowPlus1);
+
+
+  const [childModalOpen, setChildModalOpen] = useState(false);
+
 
   const [formValues, setFormValues] = useState(initEvent);
-  // const [duracion, setDuracion] = useState(20);
+  const [duracion, setDuracion] = useState(20);
 
 
   const { title, notes, start, end } = formValues;
 
   useEffect(() => {
     if (activeEvents) {
-
-      // const inicio = moment(activeEvents.start).format('YYYY-MM-DDThh:mm');
-      // const fin = moment(activeEvents.end).format('YYYY-MM-DDThh:mm');
-      // setStartDate(inicio);
-      // setEndDate(fin);
       setFormValues(activeEvents);
     } else {
-      const eventoDefinitivo = {
-        // start: moment(start).format('YYYY-MM-DDThh:mm'),
-        // end: moment(end).format('YYYY-MM-DDThh:mm'),
-        ...initEvent,
-        idProfesional: idHex,
-        idPaciente: id
-      }
-      setFormValues(eventoDefinitivo);
+      setFormValues({
+        ...formValues,
+        title: `${nombre} ${apellido}`,
+        idPaciente: id,
+        idProfesional: idHex
+      });
+
     }
-  }, [activeEvents, setFormValues]);
+  }, [activeEvents, id, setFormValues]);
 
+  useEffect(() => {
+    if (active.id) {
+      setChildModalOpen(false);
 
+    } else {
+      setChildModalOpen(true);
+    }
+
+  }, [active])
 
   const handleInputChange = ({ target }) => {
     setFormValues({
@@ -84,21 +92,43 @@ export const CalendarModal = () => {
     });
   }
 
-
   const handleStartDateChange = (e) => {
-  
+
     setStartDate(e);
     setFormValues({
       ...formValues,
       start: e
     })
+  }
 
+  // const handeSesiontime = ()=>{
+  //   const sesionEnd = moment(start).add(duracion, 'minute').toDate();
+  //   console.log(start);
+  //   console.log(sesionEnd);
+  //   setEndDate(sesionEnd);
+  //   setFormValues({
+  //     ...formValues,
+  //     end: sesionEnd
+  //   })
+
+  // }
+
+  const handleDuracion = ({ target }) => {
+    const sesionEnd = moment(start).add(target.value, 'minute').toDate();
+    console.log(start);
+    console.log(sesionEnd);
+    setDuracion(target.value);
+    setEndDate(sesionEnd);
+    setFormValues({
+      ...formValues,
+      end: sesionEnd
+    });
   }
 
   const handleEndDateChange = (e) => {
     // console.log(e);
     // setDuracion(e);
-    
+
     // const defineEndTime = moment(start).add(duracion, 'minute');
     setEndDate(e);
     setFormValues({
@@ -109,16 +139,19 @@ export const CalendarModal = () => {
   }
 
   const closeModal = () => {
+    setStartDate(nowCustom);
+    setEndDate(nowPlus1);
+    setDuracion(60);
     dispatch(uiCloseModal());
     dispatch(clearActiveNote());
+    dispatch(setPacienteNull())
     setFormValues(initEvent);
   }
 
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formValues);
-
 
 
     const momentStart = moment(start);
@@ -128,18 +161,24 @@ export const CalendarModal = () => {
       swal.fire('Error', 'La fecha de finalizacio debe der posterior a la fecha de inicio', 'error');
       return
     }
-    if (title.trim().length < 2) return setTitleValid(false);
-
+    if (title.trim().length < 2) {
+      swal.fire('Error', 'No hay paciente seleccionado', 'error');
+      return
+    }
+    
     if (activeEvents) {
-      dispatch(startAddNewEvent({ id: activeEvents.id, ...formValues }))
+      dispatch(startAddNewEvent({
+        ...formValues,
+        id: activeEvents.id
+      }));
     } else {
       dispatch(startAddNewEvent({
         ...formValues
       }));
     }
 
-    setTitleValid(true);
-    dispatch(startLoadingEvents(idHex));
+    // setTitleValid(true);
+
     closeModal();
   }
 
@@ -165,7 +204,7 @@ export const CalendarModal = () => {
           {(activeEvents) ? 'Editar turno' : 'Nuevo turno'}
         </Typography>
 
-          <Divider variant='fullWidth' color='black' />
+        <Divider variant='fullWidth' color='warning.dark' />
 
         <Grid id="modal-modal-description" container spacing={3} marginTop={'10px'}>
 
@@ -183,26 +222,27 @@ export const CalendarModal = () => {
             </FormControl>
           </Grid>
 
-          {/* <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
               <InputLabel id="Duracion">Duracion</InputLabel>
               <Select
                 labelId="Duracion"
                 label="Duracion"
+                name='duracion'
                 value={duracion}
-                onChange={handleEndDateChange}
-                defaultValue={60}
+                onChange={handleDuracion}
+
               >
                 <MenuItem value={20}>20 minutos</MenuItem>
                 <MenuItem value={30}>30 minutos</MenuItem>
                 <MenuItem value={45}>45 minutos</MenuItem>
                 <MenuItem value={60}>60 minutos</MenuItem>
-              
+
               </Select>
             </FormControl>
-          </Grid> */}
+          </Grid>
 
-  
+
           <Grid item>
             <FormControl fullWidth>
               <LocalizationProvider dateAdapter={AdapterMoment}>
@@ -210,28 +250,33 @@ export const CalendarModal = () => {
                   label="Fecha y hora de finalizacion"
                   renderInput={(params) => <TextField {...params} />}
                   value={endDate}
+                  minDateTime={startDate}
                   onChange={handleEndDateChange}
                 />
               </LocalizationProvider>
             </FormControl>
-
-
-          </Grid> 
-
-          <Grid item  xs={12}>
-            <FormControl fullWidth>
-              <InputLabel id="titulo">Paciente</InputLabel>
-              <Input
-                id="titulo"
-                type="text"
-                placeholder="Nombre de Paciente a citar"
-                name="title"
-                value={title}
-                onChange={handleInputChange}
-                fullWidth={true}
-              />
-            </FormControl>
           </Grid>
+
+          {
+            (active.id)
+              ?
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <InputLabel id="titulo">Paciente</InputLabel>
+                  <Input
+                    id="titulo"
+                    type="text"
+                    placeholder="Nombre de Paciente a citar"
+                    name="title"
+                    value={title}
+                    onChange={handleInputChange}
+                    fullWidth={true}
+                  />
+                </FormControl>
+              </Grid>
+              :
+              <SelectActiveModal open={childModalOpen} />
+          }
 
           <Grid item xs={12}>
             <FormControl fullWidth>
@@ -243,7 +288,7 @@ export const CalendarModal = () => {
                 value={notes}
                 onChange={handleInputChange}
               ></TextField>
-              <Typography>Información adicional</Typography>
+              <Typography>Información adicional de la cita</Typography>
             </FormControl>
           </Grid>
 
@@ -254,8 +299,8 @@ export const CalendarModal = () => {
                 color="primary"
                 variant="contained"
               >
-                  <SaveIcon color='black' fontSize='medium' />
-                   Guardar
+                <SaveIcon color='black' fontSize='medium' />
+                Guardar
               </Button>
             </FormControl>
           </Grid>

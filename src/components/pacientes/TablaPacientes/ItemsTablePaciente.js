@@ -1,24 +1,61 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { StyledTableRow, StyledTableCell } from './TablaPacientes';
 
 import { setPacienteActual, setPacienteNull } from '../../../redux/features/Slices/pacientesSlice';
+import { ip } from '../../../ip';
+import { fetchConTokenMethod } from '../../../api/requestApi';
+import { startLoadingPacientes } from '../../../redux/features/Slices/ProfesionalSlice';
 
 
-export const ItemsTablePaciente = ({ paciente }) => {
-    
+export const ItemsTablePaciente = ({ paciente, action }) => {
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const { profesional } = useSelector(state => state.profesional);
+
+    let isActive;
+
+    switch (action) {
+        case 'Desactivar':
+            isActive = false
+            break;
+
+        case 'Activar':
+            isActive = true
+            break;
+
+        default:
+            break;
+    }
 
     const handlePaciente = () => {
         dispatch(setPacienteActual(paciente));
         navigate('/pacienteMainScreen');
     }
 
-    const handlePacienteNull = () => {
-        dispatch(setPacienteNull());
+    const handlePacienteInactivo = async () => {
+
+
+        const pacienteAction = {
+            ...paciente,
+            active: isActive,
+            p: {
+                ...profesional
+            }
+
+        }
+        console.log(pacienteAction);
+        const url = `http://${ip}:8080/api/pacientes`;
+
+        const data = await fetchConTokenMethod(url, pacienteAction, 'POST');
+        console.log(data);
+
+        dispatch(startLoadingPacientes(profesional.idHex));
+        (isActive) && navigate('/dashboard');
     }
 
     return (
@@ -31,21 +68,19 @@ export const ItemsTablePaciente = ({ paciente }) => {
             <StyledTableCell align="right">
                 <Button
                     onClick={handlePaciente}
-                    >
+                >
                     Ir al Detalle
                 </Button>
 
             </StyledTableCell>
             <StyledTableCell align="right">
-                <NavLink
-                    // to='/historia'
-                    onClick={handlePacienteNull}
-                    className="estiloBotonDash"
+                <Button
+                    color='error'
+                    onClick={handlePacienteInactivo}
+
                 >
-                    <Button>
-                        Ir a Historia Clinica
-                    </Button>
-                </NavLink>
+                    {action}
+                </Button>
             </StyledTableCell>
 
         </StyledTableRow>

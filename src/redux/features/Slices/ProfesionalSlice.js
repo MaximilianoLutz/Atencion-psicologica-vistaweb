@@ -5,6 +5,7 @@ import { ip } from '../../../ip';
 
 const initialState = {
     pacientes: [],
+    pacientesInactivos: [],
     profesional: {
         idHex: null,
         nombre: null,
@@ -20,7 +21,7 @@ const initialState = {
 
 export const startLoadingPacientes = createAsyncThunk(
   'profesional/startLoadingPacientes',
-  async (profesionalId, thunkAPI) => {
+  async (profesionalId ) => {
     
     const url = `http://${ ip }:8080/api/pacientesAllActive/${profesionalId}`;
 
@@ -30,6 +31,19 @@ export const startLoadingPacientes = createAsyncThunk(
     return respuesta;
     
   });
+
+  export const startLoadingPacientesInactivos = createAsyncThunk(
+    'profesional/startLoadingPacientesInactivos',
+    async (profesionalId ) => {
+      
+      const url = `http://${ ip }:8080/api/pacientesAllInactive/${profesionalId}`;
+  
+      const respuesta = await fetchConTokenMethod(url, null, 'GET');
+      console.log(respuesta);
+  
+      return respuesta;
+      
+    });
 
 
 export const profesionalSlice = createSlice({
@@ -62,6 +76,16 @@ export const profesionalSlice = createSlice({
         
         state.pacientes = [];
         console.log('rejectedpacientes');
+      }).addCase(startLoadingPacientesInactivos.fulfilled, (state, action) => {
+
+        state.pacientesInactivos = action.payload
+        console.log('fulfilledLoadingPacienteInactiva');
+        console.log(action.payload);
+    
+      }).addCase(startLoadingPacientesInactivos.rejected, (state) => {
+        
+        state.pacientes = [];
+        console.log('rejectedpacientesinactive');
       })
   },
 });

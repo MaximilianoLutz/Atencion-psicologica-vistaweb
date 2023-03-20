@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchConTokenMethod, fetchConTokenSlice } from '../../../api/requestApi';
+import { fetchConTokenMethod } from '../../../api/requestApi';
 import { ip } from '../../../ip';
 
 
