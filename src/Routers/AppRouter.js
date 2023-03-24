@@ -13,6 +13,7 @@ import { PrivateRoutes } from "./PrivateRoutes";
 import { PublicRoutes } from "./PublicRoutes";
 import SignUp from "../screens/auth/SingUp";
 import '../styles/spinner.css';
+import { ForgottenPassword } from "../screens/auth/ForgottenPassword";
 
 
 
@@ -26,7 +27,7 @@ export default function AppRouter() {
   const checkTokenexpireTime = () => {
 
     const dateAux = new Date().getTime() - 3500;
-    const tokenInit = sessionStorage.getItem('token-init-date') || dateAux ;
+    const tokenInit = sessionStorage.getItem('token-init-date') || dateAux;
 
     console.log(tokenInit);
 
@@ -44,7 +45,7 @@ export default function AppRouter() {
   useEffect(() => {
     const access_token = (localStorage.getItem('access_token')) ? localStorage.getItem('access_token') : '';
 
-    if ( access_token.length > 0 && !uidAuth) {
+    if (access_token.length > 0 && !uidAuth) {
 
       dispatch(startChecking())
     }
@@ -88,6 +89,11 @@ export default function AppRouter() {
         <Route
           path="/auth/register/"
           element={<SignUp />}
+        />
+
+        <Route
+          path="/auth/forgottenPassword/"
+          element={<ForgottenPassword />}
         />
 
       </Routes>

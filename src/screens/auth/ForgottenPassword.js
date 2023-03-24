@@ -1,11 +1,15 @@
-import { Box, Button, CssBaseline, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
+import { Avatar, Box, Button, Container, createTheme, CssBaseline, FormControlLabel, Grid, TextField, ThemeProvider, Typography } from '@mui/material';
 import React from 'react';
+import { useForm } from '../../hooks/useForm';
 
 
 export const ForgottenPassword = () => {
 
-  
+  const theme = createTheme();
+
   const [ formValues, handleInputChange ] = useForm({email: ''});
+
+  const {email} = formValues;
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -36,7 +40,7 @@ export const ForgottenPassword = () => {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'success.main' }}>
-            <LockOutlinedIcon />
+            {/* <LockOutlinedIcon /> */}
           </Avatar>
           <Typography component="h1" variant="h5">
             Restaurar contraseña

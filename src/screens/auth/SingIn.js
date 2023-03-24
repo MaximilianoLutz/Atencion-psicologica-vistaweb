@@ -40,7 +40,7 @@ export const SignIn = () => {
   const navigate = useNavigate();
 
   const [formValues, handleInputChange] = useForm({
-    email: 'dor',
+    email: 'lutzmaximiliano@gmail.com',
     password: '12345'
   });
 
@@ -51,10 +51,14 @@ export const SignIn = () => {
     navigate("/auth/register/")
   }
 
+  const goForgottenPassword =()=>{
+    navigate("/auth/forgottenPassword/")
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(formValues);
-    dispatch(startLogin({email:formValues.email, password:formValues.password}));
+    dispatch(startLogin({ email: formValues.email, password: formValues.password }));
   };
 
   return (
@@ -114,9 +118,15 @@ export const SignIn = () => {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
+                {/* <Link href="/auth/forgottenPassword/" variant="body2">
+                  Recuperar contraseña
+                </Link> */}
+                <Button
+
+                  onClick={goForgottenPassword}
+                  variant="body2">
+                  {"Recuperar contraseña"}
+                </Button>
               </Grid>
               <Grid item>
                 <Button
