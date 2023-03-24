@@ -1,11 +1,16 @@
 import { Avatar, Box, Button, Container, createTheme, CssBaseline, FormControlLabel, Grid, TextField, ThemeProvider, Typography } from '@mui/material';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { crearPaciente } from '../../api/requestApi';
 import { useForm } from '../../hooks/useForm';
+import { ip } from '../../ip';
 
 
 export const ForgottenPassword = () => {
 
   const theme = createTheme();
+
+  const navigate = useNavigate();
 
   const [ formValues, handleInputChange ] = useForm({email: ''});
 
@@ -14,15 +19,15 @@ export const ForgottenPassword = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // const url = `http://${ ip }:8080/api/user`;
+    const url = `http://${ ip }:8080/api/forgottenPassword`;
 
-    // const crearUser = await crearPaciente(url, formValues);
+    const crearUser = await crearPaciente(url, formValues);
     
-    // if (crearUser[1] === 201){
-    //   dispatch(startLogin({email, password}));
-    //   navigate('/');
+    if (crearUser[1] === 201){
+      alert('revisar email')
+      navigate('/');
 
-    // }
+   }
   };
 
 
