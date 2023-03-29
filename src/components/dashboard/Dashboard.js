@@ -133,24 +133,24 @@ function DashboardContent() {
     setOpen(!open);
   };
 
-  const [tableVisibility, setTableVisibility] = useState({
-    pacientes: 'none',
-    citas: 'none',
-    fechas: 'none'
-  });
-
-  // const tableVisibility = useRef({
+  // const [tableVisibility, setTableVisibility] = useState({
   //   pacientes: 'none',
   //   citas: 'none',
-  //   fechas: 'none'})
-  const [citasView, setCitasView] = useState(false);
+  //   fechas: 'none'
+  // });
+
+  // // const tableVisibility = useRef({
+  // //   pacientes: 'none',
+  // //   citas: 'none',
+  // //   fechas: 'none'})
+  // const [citasView, setCitasView] = React.useState(false);
   
-  const citasState = ()=>{
-  setCitasView((state)=>{!state});
+  // const citasState = ()=>{
+  // setCitasView((state)=>{!state});
 
-  }
+  // }
 
-  const titleButtonCitas = (citasView) ? "Ver tabla de citas" : "Ocultar tabla de citas";
+  // const titleButtonCitas = (citasView) ? "Ver tabla de citas" : "Ocultar tabla de citas";
   
 
 
@@ -233,13 +233,8 @@ function DashboardContent() {
 
             <Grid container spacing={3}>
               {/* Citas del dia */}
-              <Grid item xs={12} md={8} lg={9} sx={()=>{
-                if(citasView){
-
-                  return {display: 'none'} 
-                }
-                return {display: 'inherit'}
-                }}>
+              <Grid item xs={12} md={8} lg={9} sx={{display: 'inherit'}}
+          >
                 <Grid
                   sx={{
                     display: 'flex',
@@ -259,14 +254,6 @@ function DashboardContent() {
                     Citas del Dia {moment().format('DD/MM')}
                   </Typography>
 
-                  <Button
-                    onClick={citasState}
-                    color='Primary'
-                  >
-                    {
-                      titleButtonCitas
-                    }
-                  </Button>
 
                 </Grid>
 
